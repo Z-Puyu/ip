@@ -1,8 +1,8 @@
-import java.util.Scanner;
+import common.Application;
+import inputs.InputAction;
 
 public class Sheogorath {
     public static void main(String[] args) {
-        InputMapping.getInstance().map("bye", InputAction.Quit);
         Application.fetchInstance().boot();
     }
 }

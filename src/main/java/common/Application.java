@@ -1,3 +1,8 @@
+package common;
+
+import inputs.InputAction;
+import inputs.InputHandler;
+
 public class Application {
     private static Application instance;
 
@@ -32,12 +37,11 @@ public class Application {
     }
 
     private void setUpInput() {
-        InputMapping.getInstance()
-                    .map("list", InputAction.DenumerateTasks)
-                    .map("bye", InputAction.Quit);
-        this.input.addListener(InputAction.EnterText, this.bot::store)
-                  .addListener(InputAction.DenumerateTasks, args -> this.bot.denumerateTasks())
-                  .addListener(InputAction.Quit, args -> this.quit());
+        this.input.link("list", InputAction.DenumerateTasks, cmd -> this.bot.denumerateTasks())
+                  .link("mark", InputAction.MarkTask, cmd -> this.bot.markTask(cmd.nextArg(Integer::parseInt)))
+                  .link("unmark", InputAction.UnmarkTask, cmd -> this.bot.unmarkTask(cmd.nextArg(Integer::parseInt)))
+                  .link("bye", InputAction.Quit, cmd -> this.quit())
+                  .addListener(InputAction.EnterText, cmd -> this.bot.store(cmd.text()));
     }
 
     public static Application fetchInstance() {

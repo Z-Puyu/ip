@@ -1,5 +1,6 @@
 package common;
 
+import comments.*;
 import inputs.InputAction;
 import inputs.InputHandler;
 
@@ -26,14 +27,24 @@ public class Application {
                            \\ \\._,\\ '/'  `'-'`  '  `'-'`  \\ \\._,\\ '/|      ' \\ \\._,\\ '/            `  '    \\  \\  \\  \s
                             `--'  `"                      `--'  `" |____.'   `--'  `"               '------'  '---'\s
                 """;
+        ChatBotConfig config = Application.getConfig(logo);
+        this.bot = new ChatBot(config);
+    }
+
+    private static ChatBotConfig getConfig(String logo) {
         String greeting = """
                 Hey, you! Finally awake!
                 You know me. You just don't know it.
                 Sheogorath, Daedric Prince of Madness. At your service.
                 """;
-        String farewell = "Well, I suppose it's back to the Shivering Isles.";
-        ChatBotConfig config = new ChatBotConfig("Sheogorath", logo, greeting, farewell);
-        this.bot = new ChatBot(config);
+        String farewell = "Well, I suppose it's back to the Shivering Isles.\n" +
+                "And as for you, my little mortal minion... Feel free to keep the Wabbajack.";
+        return new ChatBotConfig(
+                "Sheogorath", logo, greeting, farewell,
+                new SheogorathInvalidTaskCommenter(), new SheogorathAddTaskCommenter(),
+                new SheogorathListTasksCommenter(), new SheogorathTaskDoneCommenter(),
+                new SheogorathTaskResetCommenter()
+        );
     }
 
     private void setUpInput() {
@@ -41,7 +52,10 @@ public class Application {
                   .link("mark", InputAction.MarkTask, cmd -> this.bot.markTask(cmd.nextArg(Integer::parseInt)))
                   .link("unmark", InputAction.UnmarkTask, cmd -> this.bot.unmarkTask(cmd.nextArg(Integer::parseInt)))
                   .link("bye", InputAction.Quit, cmd -> this.quit())
-                  .addListener(InputAction.EnterText, cmd -> this.bot.store(cmd.text()));
+                  .link("todo", InputAction.CreateTodo, this.bot::createTask)
+                  .link("deadline", InputAction.CreateDeadline, this.bot::createTask)
+                  .link("event", InputAction.CreateEvent, this.bot::createTask)
+                  .addListener(InputAction.Undefined, this.bot::alert);
     }
 
     public static Application fetchInstance() {
@@ -58,8 +72,8 @@ public class Application {
 
     public void boot() {
         this.isRunning = true;
-        this.bot.greetUser();
         this.bot.showLogo();
+        this.bot.greetUser();
         this.setUpInput();
         this.input.run();
     }

@@ -2,7 +2,10 @@ package inputs;
 
 public enum InputAction {
     Quit,
-    EnterText,
+    Undefined,
+    CreateTodo,
+    CreateDeadline,
+    CreateEvent,
     DenumerateTasks,
     MarkTask,
     UnmarkTask

@@ -1,4 +1,4 @@
-package task;
+package reminders;
 
 import java.util.ArrayList;
 import java.util.List;

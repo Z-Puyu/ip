@@ -2,10 +2,6 @@ package reminders;
 
 import inputs.InputCommand;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public abstract class Task {
     private final String description;
     private boolean isDone;

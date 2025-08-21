@@ -39,11 +39,23 @@ public class Application {
                 """;
         String farewell = "Well, I suppose it's back to the Shivering Isles.\n" +
                 "And as for you, my little mortal minion... Feel free to keep the Wabbajack.";
+        String noTaskDescComment = "Task description! Now where did you leave my task description?";
+        String noEventTimeComment = """
+                When does this begin? And when does it end?
+                Well? Spit it out, mortal. I haven't got an eternity! 
+                Actually... I do. Little joke.
+                """;
+        String noDeadlineComment = """
+                By when you want it done?
+                Well? Spit it out, mortal. I haven't got an eternity! 
+                Actually... I do. Little joke.
+                """;
         return new ChatBotConfig(
                 "Sheogorath", logo, greeting, farewell,
                 new SheogorathInvalidTaskCommenter(), new SheogorathAddTaskCommenter(),
                 new SheogorathListTasksCommenter(), new SheogorathTaskDoneCommenter(),
-                new SheogorathTaskResetCommenter()
+                new SheogorathTaskResetCommenter(), new SheogorathUndefinedCommandCommenter(),
+                noTaskDescComment, noDeadlineComment, noEventTimeComment
         );
     }
 

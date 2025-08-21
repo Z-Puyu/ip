@@ -1,6 +1,7 @@
 package common;
 
 import comments.Commenter;
+import inputs.InputCommand;
 import reminders.MemoStateInfo;
 import reminders.Task;
 import reminders.TaskInfo;
@@ -16,5 +17,9 @@ public record ChatBotConfig(
         Commenter<MemoStateInfo> addTaskCommenter,
         Commenter<MemoStateInfo> listTasksCommenter,
         Commenter<TaskInfo> markTaskCommenter,
-        Commenter<TaskInfo> unmarkTaskCommenter
+        Commenter<TaskInfo> unmarkTaskCommenter,
+        Commenter<InputCommand> undefinedCommandCommenter,
+        String missingTaskDescriptionComment,
+        String missingDeadlineComment,
+        String missingEventTimeComment
 ) { }

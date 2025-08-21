@@ -51,10 +51,10 @@ public class InputHandler {
     }
 
     private InputAction interpret(String command) {
-        return this.actions.getOrDefault(command, InputAction.EnterText);
+        return this.actions.getOrDefault(command, InputAction.Undefined);
     }
 
-    private void handle(String input) throws IllegalArgumentException {
+    private void handle(String input) {
         StringTokenizer st = new StringTokenizer(input, " ");
         String text = st.nextToken();
         InputAction action = this.interpret(text);
@@ -67,13 +67,7 @@ public class InputHandler {
     public void run() {
         Scanner sc = new Scanner(System.in);
         while (Application.isRunning()) {
-            try {
-                this.handle(sc.nextLine());
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
-                sc.close();
-                System.exit(1);
-            }
+            this.handle(sc.nextLine());
         }
     }
 }

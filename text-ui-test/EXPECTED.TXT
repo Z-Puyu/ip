@@ -1,7 +1,97 @@
-Hello from
- ____        _        
-|  _ \ _   _| | _____ 
-| | | | | | | |/ / _ \
-| |_| | |_| |   <  __/
-|____/ \__,_|_|\_\___|
+                                                       .---.                _..._
+                                                       |   |             .-'_..._''.
+                     /|        /|                      '---'           .' .'      '.\    .
+       _     _       ||        ||                      .---.          / .'             .'|
+ /\    \\   //       ||        ||                      |   |         . '             .'  |
+ `\\  //\\ //  __    ||  __    ||  __        __        |   |    __   | |            <    |
+   \`//  \'/.:--.'.  ||/'__ '. ||/'__ '.  .:--.'.      |   | .:--.'. | |             |   | ____
+    \|   |// |   \ | |:/`  '. '|:/`  '. '/ |   \ |     |   |/ |   \ |. '             |   | \ .'
+     '     `" __ | | ||     | |||     | |`" __ | |     |   |`" __ | | \ '.          .|   |/  .
+            .'.''| | ||\    / '||\    / ' .'.''| |     |   | .'.''| |  '. `._____.-'/|    /\  \
+           / /   | |_|/\'..' / |/\'..' / / /   | |_ __.'   '/ /   | |_   `-.______ / |   |  \  \
+           \ \._,\ '/'  `'-'`  '  `'-'`  \ \._,\ '/|      ' \ \._,\ '/            `  '    \  \  \
+            `--'  `"                      `--'  `" |____.'   `--'  `"               '------'  '---'
 
+--------------------------------------------------
+Hey, you! Finally awake!
+You know me. You just don't know it.
+Sheogorath, Daedric Prince of Madness. At your service.
+--------------------------------------------------
+--------------------------------------------------
+Buy cheese? Oh, good choice. Well, good for me. Now go, before I change my mind.
+	[T][ ] Buy cheese
+You seem to be having 1 small problem... or perhaps it's a big problem?
+Maybe if you shrunk the whole thing down a little first?
+--------------------------------------------------
+--------------------------------------------------
+Pay taxes? Oh, good choice. Well, good for me. Now go, before I change my mind.
+	[D][ ] Pay taxes (by: tomorrow)
+You seem to be having 2 small problems... or perhaps it's a big problem?
+Maybe if you shrunk the whole thing down a little first?
+--------------------------------------------------
+--------------------------------------------------
+Grand Banquet? Oh, good choice. Well, good for me. Now go, before I change my mind.
+	[E][ ] Grand Banquet (from: noon to: midnight)
+You seem to be having 3 small problems... or perhaps it's a big problem?
+Maybe if you shrunk the whole thing down a little first?
+--------------------------------------------------
+--------------------------------------------------
+Task description! Now where did you leave my task description?
+--------------------------------------------------
+--------------------------------------------------
+By when you want it done?
+Well? Spit it out, mortal. I haven't got an eternity!
+Actually... I do. Little joke.
+--------------------------------------------------
+--------------------------------------------------
+When does this begin? And when does it end?
+Well? Spit it out, mortal. I haven't got an eternity!
+Actually... I do. Little joke.
+--------------------------------------------------
+--------------------------------------------------
+Your mortal obligations await!
+	1.[T][ ] Buy cheese
+	2.[D][ ] Pay taxes (by: tomorrow)
+	3.[E][ ] Grand Banquet (from: noon to: midnight)
+--------------------------------------------------
+--------------------------------------------------
+Pay taxes? Check.
+	[D][X] Pay taxes (by: tomorrow)
+Oh, I am so happy for you! My, what a burden to have carried. But you've done it!
+--------------------------------------------------
+--------------------------------------------------
+Now that's the real question, isn't it? Because honestly, that task doesn't exist! Ha!
+--------------------------------------------------
+--------------------------------------------------
+Time to return to the hum drum day-to-day.
+	[T][ ] Buy cheese
+--------------------------------------------------
+--------------------------------------------------
+Now that's the real question, isn't it? Because honestly, that task doesn't exist! Ha!
+--------------------------------------------------
+--------------------------------------------------
+rabbit? Reeaaaalllllyyyy? Ooh, ooh, what kind of command was that? A song? A summons?
+Wait, I know! A death threat written on the back of an Argonian concubine! Those are my favorite.
+
+But seriously. What's the command you wanted to say?
+--------------------------------------------------
+--------------------------------------------------
+Save the world? Oh, good choice. Well, good for me. Now go, before I change my mind.
+	[T][ ] Save the world
+You seem to be having 4 small problems... or perhaps it's a big problem?
+Maybe if you shrunk the whole thing down a little first?
+--------------------------------------------------
+--------------------------------------------------
+Save the world? Oh, good choice. Well, good for me. Now go, before I change my mind.
+	[T][ ] Save the world
+You seem to be having 5 small problems... or perhaps it's a big problem?
+Maybe if you shrunk the whole thing down a little first?
+--------------------------------------------------
+--------------------------------------------------
+Your mortal obligations await!
+	1.[T][ ] Buy cheese
+	2.[D][X] Pay taxes (by: tomorrow)
+	3.[E][ ] Grand Banquet (from: noon to: midnight)
+	4.[T][ ] Save the world
+	5.[T][ ] Save the world
+--------------------------------------------------

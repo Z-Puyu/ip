@@ -1,0 +1,15 @@
+todo Buy cheese
+deadline Pay taxes /by tomorrow
+event Grand Banquet /from noon /to midnight
+todo
+deadline Missing deadline /by
+event Party /from  /to
+list
+mark 2
+mark 100
+unmark 1
+unmark 999
+rabbit Hole
+todo Save the world
+todo Save the world
+list

@@ -17,12 +17,7 @@ public record InputCommand(InputAction action, String text, StringTokenizer args
     }
 
     public String nextArg() {
-        String arg = this.readUntil(' ');
-        if (arg.isBlank()) {
-            throw new IllegalArgumentException(String.format("Command %s is used with wrong arguments", this.text));
-        }
-
-        return arg;
+        return this.readUntil(' ');
     }
 
     public String readUntil(char delimiter) {

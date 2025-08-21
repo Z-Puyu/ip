@@ -1,10 +1,7 @@
 package common;
 
 import inputs.InputCommand;
-import reminders.Memo;
-import reminders.MemoStateInfo;
-import reminders.Task;
-import reminders.TaskInfo;
+import reminders.*;
 
 public final class ChatBot {
     private static final String SEPARATOR = new String(new char[50]).replace('\0', '-');
@@ -44,9 +41,17 @@ public final class ChatBot {
     }
 
     public void createTask(InputCommand command) {
-        Task task = Task.from(command);
-        if (this.memo.add(task)) {
-            this.say(this.config.addTaskCommenter().commentOn(new MemoStateInfo(task, this.memo)));
+        try {
+            Task task = Task.from(command);
+            if (this.memo.add(task)) {
+                this.say(this.config.addTaskCommenter().commentOn(new MemoStateInfo(task, this.memo)));
+            }
+        } catch (EmptyTaskException e) {
+            this.say(this.config.missingTaskDescriptionComment());
+        } catch (UndefinedDeadlineException e) {
+            this.say(this.config.missingDeadlineComment());
+        } catch (UndefinedTimeFrameException e) {
+            this.say(this.config.missingEventTimeComment());
         }
     }
 
@@ -63,7 +68,7 @@ public final class ChatBot {
     }
 
     public void alert(InputCommand command) {
-
+        this.say(this.config.undefinedCommandCommenter().commentOn(command));
     }
 
     @Override

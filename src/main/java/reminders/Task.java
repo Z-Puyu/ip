@@ -14,24 +14,44 @@ public abstract class Task {
         this.description = description;
     }
 
-    public static Task from(InputCommand command) throws IllegalArgumentException {
+    public static Task from(InputCommand command) throws EmptyTaskException, UndefinedTimeFrameException,
+            UndefinedDeadlineException {
         if (!command.args().hasMoreTokens()) {
-            return new ToDo(command.text());
+            throw new EmptyTaskException("No description provided for task.");
         }
 
         String desc = command.readUntil("/by", "/from");
+        if (desc.isBlank()) {
+            throw new EmptyTaskException("No description provided for task.");
+        }
+
+        Task task = null;
         switch (command.action()) {
             case CreateTodo:
-                return new Task.ToDo(desc);
+                task = new Task.ToDo(desc);
+                break;
             case CreateDeadline:
-                return new Task.Deadline(desc, command.nextArg());
+                String date = command.nextArg();
+                if (date.isBlank()) {
+                    throw new UndefinedDeadlineException("No deadline provided for task.");
+                }
+
+                task = new Task.Deadline(desc, date);
+                break;
             case CreateEvent:
                 String start = command.readUntil("/to");
                 String end = command.nextArg();
-                return new Task.Event(desc, start, end);
+                if (start.isBlank() || end.isBlank()) {
+                    throw new UndefinedTimeFrameException("No start or end date provided for task.");
+                }
+
+                task = new Task.Event(desc, start, end);
+                break;
+            default:
+                break;
         }
 
-        throw new IllegalArgumentException(String.format("Invalid command: %s", command.text()));
+        return task;
     }
 
     public String getDescription() {

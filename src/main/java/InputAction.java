@@ -1,4 +1,5 @@
 public enum InputAction {
     Quit,
-    EnterText
+    EnterText,
+    DenumerateTasks
 }

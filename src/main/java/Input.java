@@ -1,1 +1,1 @@
-public record Input(InputAction action, String args) { }
+public record Input(InputAction action, String command) { }

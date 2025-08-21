@@ -33,8 +33,10 @@ public class Application {
 
     private void setUpInput() {
         InputMapping.getInstance()
+                    .map("list", InputAction.DenumerateTasks)
                     .map("bye", InputAction.Quit);
         this.input.addListener(InputAction.EnterText, this.bot::store)
+                  .addListener(InputAction.DenumerateTasks, args -> this.bot.denumerateTasks())
                   .addListener(InputAction.Quit, args -> this.quit());
     }
 

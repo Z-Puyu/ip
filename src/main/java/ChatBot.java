@@ -1,3 +1,5 @@
+import java.util.Collection;
+
 public final class ChatBot {
     private static final String SEPARATOR = new String(new char[50]).replace('\0', '-');
     private final ChatBotConfig config;
@@ -13,6 +15,18 @@ public final class ChatBot {
 
     public void say(String text) {
         System.out.println(ChatBot.SEPARATOR + '\n' + text + '\n' + ChatBot.SEPARATOR);
+    }
+
+    public void denumerateTasks() {
+        StringBuilder sb = new StringBuilder("Your mortal obligations await!\n");
+        for (int i = 0; i < this.memo.size(); i += 1) {
+            sb.append(String.format("%d. %s", i + 1, this.memo.get(i).name()));
+            if (i + 1 < this.memo.size()) {
+                sb.append("\n");
+            }
+        }
+
+        this.say(sb.toString());
     }
 
     public void store(String taskName) {

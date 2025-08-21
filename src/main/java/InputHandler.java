@@ -46,8 +46,8 @@ public class InputHandler {
             Input input = InputMapping.interpret(sc.nextLine());
             InputAction action = input.action();
             if (this.listeners.containsKey(action)) {
-                String args = input.args();
-                this.listeners.get(action).forEach(consumer -> consumer.accept(args));
+                String command = input.command();
+                this.listeners.get(action).forEach(consumer -> consumer.accept(command));
             }
         }
     }

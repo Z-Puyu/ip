@@ -75,4 +75,13 @@ public final class ChatBot {
     public String toString() {
         return this.config.name();
     }
+
+    public void deleteTask(int index) {
+        Task removed = this.memo.removeAt(index);
+        if (removed == null) {
+            this.say(this.config.invalidTaskCommenter().commentOn(new TaskInfo(null, index)));
+        } else {
+            this.say(this.config.removeTaskCommenter().commentOn(new TaskInfo(removed, index)));
+        }
+    }
 }

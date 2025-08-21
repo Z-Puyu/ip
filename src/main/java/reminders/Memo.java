@@ -17,4 +17,8 @@ public class Memo {
     public Task get(int index) {
         return this.tasks.get(index);
     }
+
+    public Task removeAt(int index) {
+        return this.tasks.remove(index);
+    }
 }

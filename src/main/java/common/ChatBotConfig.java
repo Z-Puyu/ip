@@ -16,6 +16,7 @@ public record ChatBotConfig(
         Commenter<TaskInfo> markTaskCommenter,
         Commenter<TaskInfo> unmarkTaskCommenter,
         Commenter<InputCommand> undefinedCommandCommenter,
+        Commenter<TaskInfo> removeTaskCommenter,
         String missingTaskDescriptionComment,
         String missingDeadlineComment,
         String missingEventTimeComment

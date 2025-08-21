@@ -55,6 +55,7 @@ public class Application {
                 new SheogorathInvalidTaskCommenter(), new SheogorathAddTaskCommenter(),
                 new SheogorathListTasksCommenter(), new SheogorathTaskDoneCommenter(),
                 new SheogorathTaskResetCommenter(), new SheogorathUndefinedCommandCommenter(),
+                new SheogorathRemoveTaskCommenter(),
                 noTaskDescComment, noDeadlineComment, noEventTimeComment
         );
     }
@@ -67,6 +68,7 @@ public class Application {
                   .link("todo", InputAction.CreateTodo, this.bot::createTask)
                   .link("deadline", InputAction.CreateDeadline, this.bot::createTask)
                   .link("event", InputAction.CreateEvent, this.bot::createTask)
+                .link("delete", InputAction.DeleteTask, cmd -> this.bot.deleteTask(cmd.nextArg(Integer::parseInt)))
                   .addListener(InputAction.Undefined, this.bot::alert);
     }
 

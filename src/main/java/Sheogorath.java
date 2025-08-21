@@ -1,6 +1,8 @@
+import java.util.Scanner;
+
 public class Sheogorath {
     public static void main(String[] args) {
-        Application.instance().Boot();
-        Application.instance().Quit();
+        InputMapping.getInstance().map("bye", InputAction.Quit);
+        Application.fetchInstance().boot();
     }
 }

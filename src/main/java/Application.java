@@ -1,43 +1,65 @@
 public class Application {
     private static Application instance;
 
-    private String logo;
-    private ChatBot bot;
+    private boolean isRunning;
+    private final ChatBot bot;
+    private final InputHandler input = new InputHandler();
 
-    private Application(String logo, ChatBot bot) {
-        this.logo = logo;
-        this.bot = bot;
+    private Application() {
+        String logo = """
+                                                                       .---.                _..._                  \s
+                                                                       |   |             .-'_..._''.               \s
+                                     /|        /|                      '---'           .' .'      '.\\    .         \s
+                       _     _       ||        ||                      .---.          / .'             .'|         \s
+                 /\\    \\\\   //       ||        ||                      |   |         . '             .'  |         \s
+                 `\\\\  //\\\\ //  __    ||  __    ||  __        __        |   |    __   | |            <    |         \s
+                   \\`//  \\'/.:--.'.  ||/'__ '. ||/'__ '.  .:--.'.      |   | .:--.'. | |             |   | ____    \s
+                    \\|   |// |   \\ | |:/`  '. '|:/`  '. '/ |   \\ |     |   |/ |   \\ |. '             |   | \\ .'    \s
+                     '     `" __ | | ||     | |||     | |`" __ | |     |   |`" __ | | \\ '.          .|   |/  .     \s
+                            .'.''| | ||\\    / '||\\    / ' .'.''| |     |   | .'.''| |  '. `._____.-'/|    /\\  \\    \s
+                           / /   | |_|/\\'..' / |/\\'..' / / /   | |_ __.'   '/ /   | |_   `-.______ / |   |  \\  \\   \s
+                           \\ \\._,\\ '/'  `'-'`  '  `'-'`  \\ \\._,\\ '/|      ' \\ \\._,\\ '/            `  '    \\  \\  \\  \s
+                            `--'  `"                      `--'  `" |____.'   `--'  `"               '------'  '---'\s
+                """;
+        String greeting = """
+                Hey, you! Finally awake!
+                You know me. You just don't know it.
+                Sheogorath, Daedric Prince of Madness. At your service.
+                """;
+        String farewell = "Well, I suppose it's back to the Shivering Isles.";
+        ChatBotConfig config = new ChatBotConfig("Sheogorath", logo, greeting, farewell);
+        this.bot = new ChatBot(config);
     }
 
-    public static Application instance() {
-        if (instance == null) {
-            String logo = """
-                                                                           .---.                _..._                  \s
-                                                                           |   |             .-'_..._''.               \s
-                                         /|        /|                      '---'           .' .'      '.\\    .         \s
-                           _     _       ||        ||                      .---.          / .'             .'|         \s
-                     /\\    \\\\   //       ||        ||                      |   |         . '             .'  |         \s
-                     `\\\\  //\\\\ //  __    ||  __    ||  __        __        |   |    __   | |            <    |         \s
-                       \\`//  \\'/.:--.'.  ||/'__ '. ||/'__ '.  .:--.'.      |   | .:--.'. | |             |   | ____    \s
-                        \\|   |// |   \\ | |:/`  '. '|:/`  '. '/ |   \\ |     |   |/ |   \\ |. '             |   | \\ .'    \s
-                         '     `" __ | | ||     | |||     | |`" __ | |     |   |`" __ | | \\ '.          .|   |/  .     \s
-                                .'.''| | ||\\    / '||\\    / ' .'.''| |     |   | .'.''| |  '. `._____.-'/|    /\\  \\    \s
-                               / /   | |_|/\\'..' / |/\\'..' / / /   | |_ __.'   '/ /   | |_   `-.______ / |   |  \\  \\   \s
-                               \\ \\._,\\ '/'  `'-'`  '  `'-'`  \\ \\._,\\ '/|      ' \\ \\._,\\ '/            `  '    \\  \\  \\  \s
-                                `--'  `"                      `--'  `" |____.'   `--'  `"               '------'  '---'\s
-                    """;
-            instance = new Application(logo, new ChatBot("Sheogorath"));
+    private void setUpInput() {
+        InputMapping.getInstance().map("bye", InputAction.Quit);
+        this.input.addListener(InputAction.Echo, this.bot::say)
+                  .addListener(InputAction.Quit, args -> this.quit());
+    }
+
+    public static Application fetchInstance() {
+        if (Application.instance == null) {
+            Application.instance = new Application();
         }
 
         return Application.instance;
     }
 
-    public void Boot() {
-        this.bot.GreetUser();
-        System.out.println(logo);
+    public static boolean isRunning() {
+        return Application.instance != null && Application.instance.isRunning;
     }
 
-    public void Quit() {
-        this.bot.SayGoodbye();
+    public void boot() {
+        this.isRunning = true;
+        this.bot.greetUser();
+        this.bot.showLogo();
+        this.setUpInput();
+        this.input.run();
+    }
+
+    public void quit() {
+        this.bot.sayGoodbye();
+        this.isRunning = false;
+        System.exit(0);
     }
 }

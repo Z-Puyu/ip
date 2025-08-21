@@ -1,25 +1,38 @@
-public class ChatBot {
-    private String name;
+public final class ChatBot {
+    private static final int DEFAULT_SEPARATOR_LENGTH = 50;
+    private final ChatBotConfig config;
 
-    public ChatBot(String name) {
-        this.name = name;
+    public ChatBot(ChatBotConfig config) {
+        this.config = config;
     }
 
-    public void GreetUser() {
-        String greeting = """
-                Hey, you! Finally awake!
-                You know me. You just don't know it.
-                Sheogorath, Daedric Prince of Madness. At your service.
-                """;
-        System.out.println(greeting);
+    private void drawSeparator(int length) {
+        System.out.println(new String(new char[length]).replace('\0', '-'));
     }
 
-    public void SayGoodbye() {
-        System.out.println("Well, I suppose it's back to the Shivering Isles.");
+    public void say(String text) {
+        this.drawSeparator(ChatBot.DEFAULT_SEPARATOR_LENGTH);
+        System.out.println(text);
+        this.drawSeparator(ChatBot.DEFAULT_SEPARATOR_LENGTH);
+    }
+
+    public void showLogo() {
+        System.out.println(this.config.getLogo());
+        this.drawSeparator(ChatBot.DEFAULT_SEPARATOR_LENGTH);
+    }
+
+    public void greetUser() {
+        System.out.println(this.config.getGreeting());
+        this.drawSeparator(ChatBot.DEFAULT_SEPARATOR_LENGTH);
+    }
+
+    public void sayGoodbye() {
+        this.drawSeparator(ChatBot.DEFAULT_SEPARATOR_LENGTH);
+        System.out.println(this.config.getFarewell());
     }
 
     @Override
     public String toString() {
-        return name;
+        return this.config.getName();
     }
 }

@@ -32,8 +32,9 @@ public class Application {
     }
 
     private void setUpInput() {
-        InputMapping.getInstance().map("bye", InputAction.Quit);
-        this.input.addListener(InputAction.Echo, this.bot::say)
+        InputMapping.getInstance()
+                    .map("bye", InputAction.Quit);
+        this.input.addListener(InputAction.EnterText, this.bot::store)
                   .addListener(InputAction.Quit, args -> this.quit());
     }
 

@@ -19,6 +19,6 @@ public class InputMapping {
     }
 
     public static Input interpret(String input) {
-        return new Input(InputMapping.instance.map.getOrDefault(input, InputAction.Echo), input);
+        return new Input(InputMapping.instance.map.getOrDefault(input, InputAction.EnterText), input);
     }
 }

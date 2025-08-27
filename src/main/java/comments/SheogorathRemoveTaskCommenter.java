@@ -1,4 +1,4 @@
-﻿package comments;
+package comments;
 
 import reminders.TaskInfo;
 

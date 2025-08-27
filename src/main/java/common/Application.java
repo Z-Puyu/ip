@@ -42,12 +42,12 @@ public class Application {
         String noTaskDescComment = "Task description! Now where did you leave my task description?";
         String noEventTimeComment = """
                 When does this begin? And when does it end?
-                Well? Spit it out, mortal. I haven't got an eternity! 
+                Well? Spit it out, mortal. I haven't got an eternity!
                 Actually... I do. Little joke.
                 """;
         String noDeadlineComment = """
                 By when you want it done?
-                Well? Spit it out, mortal. I haven't got an eternity! 
+                Well? Spit it out, mortal. I haven't got an eternity!
                 Actually... I do. Little joke.
                 """;
         return new ChatBotConfig(
@@ -68,7 +68,7 @@ public class Application {
                   .link("todo", InputAction.CreateTodo, this.bot::createTask)
                   .link("deadline", InputAction.CreateDeadline, this.bot::createTask)
                   .link("event", InputAction.CreateEvent, this.bot::createTask)
-                .link("delete", InputAction.DeleteTask, cmd -> this.bot.deleteTask(cmd.nextArg(Integer::parseInt)))
+                  .link("delete", InputAction.DeleteTask, cmd -> this.bot.deleteTask(cmd.nextArg(Integer::parseInt)))
                   .addListener(InputAction.Undefined, this.bot::alert);
     }
 

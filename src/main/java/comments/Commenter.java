@@ -1,5 +1,5 @@
 package comments;
 
-public interface Commenter<T> {
-    String commentOn(T context);
+public interface Commenter {
+    String commentOn(CommentContext context);
 }

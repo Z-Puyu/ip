@@ -1,11 +1,10 @@
 package comments;
 
-import reminders.MemoStateInfo;
 import reminders.Task;
 
-public class SheogorathAddTaskCommenter implements Commenter<MemoStateInfo> {
+public class SheogorathAddTaskCommenter implements Commenter {
     @Override
-    public String commentOn(MemoStateInfo context) {
+    public String commentOn(CommentContext context) {
         Task task = context.lastChangedTask();
         int size = context.memo().size();
         return String.format("""

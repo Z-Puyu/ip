@@ -31,30 +31,24 @@ public class TimeParser {
         if (input.equals("today")) {
             return LocalDate.now();
         }
-        
-        if (input.startsWith("today ")) {
-            String timePart = input.substring(5).trim();
-            return LocalDateTime.of(LocalDate.now(), TimeParser.parseTime(timePart));
-        }
 
-        if (input.equals("tomorrow")) {
-            return LocalDate.now().plusDays(1);
-        }
-
-        if (input.startsWith("tomorrow ")) {
-            String timePart = input.substring(8).trim();
-            return LocalDateTime.of(LocalDate.now().plusDays(1), TimeParser.parseTime(timePart));
-        }
-
-        DayOfWeek day = TimeParser.parseDayOfWeek(input);
-        if (day != null) {
-            String rest = input.substring(input.indexOf(' ')).trim();
-            LocalDate date = LocalDate.now().with(TemporalAdjusters.next(day));
-            return rest.isEmpty() ? date : LocalDateTime.of(date, TimeParser.parseTime(rest));
-        }
-
-        LocalDate date = TimeParser.parseDate(input);
+        LocalDate date;
         LocalTime time = TimeParser.parseTime(input);
+        if (input.startsWith("today ")) {
+            date = LocalDate.now();
+        } else if (input.equals("tomorrow")) {
+            date = LocalDate.now().plusDays(1);
+        } else if (input.startsWith("tomorrow ")) {
+            date = LocalDate.now().plusDays(1);
+        } else {
+            DayOfWeek day = TimeParser.parseDayOfWeek(input);
+            if (day != null) {
+                date = LocalDate.now().with(TemporalAdjusters.next(day));
+            } else {
+                date = TimeParser.parseDate(input);
+            }
+        }
+
         return time == null ? date : LocalDateTime.of(date, time);
     }
 

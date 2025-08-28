@@ -2,7 +2,13 @@ package reminders;
 
 import inputs.InputCommand;
 
-public abstract class Task {
+import java.io.Serial;
+import java.io.Serializable;
+
+public abstract class Task implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     private final String description;
     private boolean isDone;
 

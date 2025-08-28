@@ -1,0 +1,63 @@
+package common;
+
+import reminders.Memo;
+import reminders.Task;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.List;
+
+public final class SaveDataManager {
+    private static final Path DATA_DIR = Paths.get("src", "main", "data");
+    private static final Path SAVE_FILE = DATA_DIR.resolve("tasks.dat");
+
+    private SaveDataManager() { }
+
+    public static void save(Memo memo) throws IOException {
+        if (Files.notExists(DATA_DIR)) {
+            Files.createDirectories(DATA_DIR);
+        }
+
+        try (ObjectOutputStream oos = new ObjectOutputStream(
+                Files.newOutputStream(
+                        SAVE_FILE,
+                        StandardOpenOption.CREATE,
+                        StandardOpenOption.TRUNCATE_EXISTING,
+                        StandardOpenOption.WRITE
+                )
+        )) {
+            // Write the number of tasks, then each task
+            oos.writeInt(memo.size());
+            for (Task task : memo) {
+                oos.writeObject(task);
+            }
+
+            oos.flush();
+        }
+    }
+    
+    public static List<Task> loadTasks() {
+        System.out.println("Loading tasks from " + SAVE_FILE);
+        List<Task> tasks = new ArrayList<>();
+        if (Files.notExists(SAVE_FILE)) {
+            return tasks;
+        }
+
+        try (ObjectInputStream ois = new ObjectInputStream(Files.newInputStream(SAVE_FILE))) {
+            int count = ois.readInt();
+            for (int i = 0; i < count; i += 1) {
+                tasks.add((Task)ois.readObject());
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            return List.of();
+        }
+
+        return tasks;
+    }
+}

@@ -3,7 +3,13 @@ package common;
 import comments.CommentContext;
 import comments.CommentTopic;
 import inputs.InputCommand;
-import reminders.*;
+import reminders.EmptyTaskException;
+import reminders.Memo;
+import reminders.Task;
+import reminders.UndefinedDeadlineException;
+import reminders.UndefinedTimeFrameException;
+
+import java.io.IOException;
 
 public final class ChatBot {
     private static final String SEPARATOR = new String(new char[50]).replace('\0', '-');
@@ -39,6 +45,7 @@ public final class ChatBot {
     }
 
     public void denumerateTasks() {
+        // TODO: What to say if there are no tasks?
         this.say(this.config.FetchComment(CommentTopic.ListingTask, CommentContext.OfMemo(this.memo, null)));
     }
 
@@ -46,7 +53,7 @@ public final class ChatBot {
         try {
             Task task = Task.from(command);
             if (this.memo.add(task)) {
-                this.say(this.config.FetchComment(CommentTopic.AddTask, CommentContext.OfTask(task, this.memo.size())));
+                this.say(this.config.FetchComment(CommentTopic.AddTask, CommentContext.OfMemo(this.memo, task)));
             }
         } catch (EmptyTaskException e) {
             this.say(this.config.FetchComment(CommentTopic.TaskWithoutDescription, CommentContext.OfTask(null, -1)));
@@ -84,6 +91,16 @@ public final class ChatBot {
             this.say(this.config.FetchComment(CommentTopic.InvalidTask, CommentContext.OfTask(null, index)));
         } else {
             this.say(this.config.FetchComment(CommentTopic.RemoveTask, CommentContext.OfTask(removed, index)));
+        }
+    }
+
+    public void rememberTasks() throws IOException {
+        SaveDataManager.save(this.memo);
+    }
+
+    public void recollectTasks() {
+        for (Task task : SaveDataManager.loadTasks()) {
+            this.memo.add(task);
         }
     }
 }

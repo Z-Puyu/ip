@@ -1,4 +1,4 @@
-﻿package comments;
+package comments;
 
 import inputs.InputCommand;
 import reminders.Memo;

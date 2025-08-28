@@ -1,4 +1,4 @@
-﻿package comments;
+package comments;
 
 public class SheogorathUndefinedTimeFrameCommenter implements Commenter {
     @Override

@@ -43,7 +43,6 @@ public final class Storage {
     }
     
     private static List<Task> loadTasks() {
-        System.out.println("Loading tasks from " + SAVE_FILE);
         List<Task> tasks = new ArrayList<>();
         if (Files.notExists(SAVE_FILE)) {
             return tasks;

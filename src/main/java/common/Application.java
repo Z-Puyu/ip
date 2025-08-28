@@ -70,7 +70,9 @@ public class Application {
     }
 
     private void setUpInput() {
-        this.input.link("list", InputAction.DenumerateTasks, cmd -> this.bot.denumerateTasks())
+        this.input.link("list", InputAction.DenumerateTasks, cmd -> this.bot.denumerateTasks(null))
+                  .link("find", InputAction.FindTasks,
+                        cmd -> this.bot.denumerateTasks(task -> task.getDescription().contains(cmd.nextArg())))
                   .link("mark", InputAction.MarkTask, cmd -> this.bot.markTask(cmd.nextArg(Integer::parseInt)))
                   .link("unmark", InputAction.UnmarkTask, cmd -> this.bot.unmarkTask(cmd.nextArg(Integer::parseInt)))
                   .link("bye", InputAction.Quit, cmd -> this.quit())

@@ -10,6 +10,7 @@ import reminders.UndefinedDeadlineException;
 import reminders.UndefinedTimeFrameException;
 
 import java.io.IOException;
+import java.util.function.Predicate;
 
 public final class ChatBot {
     private static final String SEPARATOR = new String(new char[50]).replace('\0', '-');
@@ -44,9 +45,11 @@ public final class ChatBot {
         }
     }
 
-    public void denumerateTasks() {
+    public void denumerateTasks(Predicate<Task> predicate) {
         // TODO: What to say if there are no tasks?
-        this.say(this.config.FetchComment(CommentTopic.ListingTask, CommentContext.OfMemo(this.taskList, null)));
+
+        this.say(this.config.FetchComment(CommentTopic.ListingTask,
+                                          CommentContext.OfTaskList(this.taskList.where(predicate), null)));
     }
 
     public boolean addTask(Task task) {
@@ -57,7 +60,7 @@ public final class ChatBot {
         try {
             Task task = Task.from(command);
             if (this.addTask(task)) {
-                this.say(this.config.FetchComment(CommentTopic.AddTask, CommentContext.OfMemo(this.taskList, task)));
+                this.say(this.config.FetchComment(CommentTopic.AddTask, CommentContext.OfTaskList(this.taskList, task)));
             }
         } catch (EmptyTaskException e) {
             this.say(this.config.FetchComment(CommentTopic.TaskWithoutDescription, CommentContext.OfTask(null, -1)));

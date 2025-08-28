@@ -44,5 +44,11 @@ public enum InputAction {
         public String toString() {
             return "Unmark Task";
         }
+    },
+    FindTasks {
+        @Override
+        public String toString() {
+            return "Find Tasks";
+        }
     }
 }

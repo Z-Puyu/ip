@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Spliterator;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 /**
  * A list of tasks.
@@ -45,6 +46,21 @@ public class TaskList implements Iterable<Task> {
      */
     public Task removeAt(int index) {
         return tasks.remove(index);
+    }
+
+    public List<Task> where(Predicate<Task> predicate) {
+        if (predicate == null) {
+            return this.tasks;
+        }
+
+        List<Task> result = new ArrayList<>();
+        for (Task task : this.tasks) {
+            if (predicate.test(task)) {
+                result.add(task);
+            }
+        }
+
+        return result;
     }
 
     @Override

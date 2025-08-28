@@ -11,6 +11,9 @@ import reminders.TaskList;
 import reminders.UndefinedDeadlineException;
 import reminders.UndefinedTimeFrameException;
 
+import java.io.IOException;
+import java.util.function.Predicate;
+
 public final class ChatBot {
     private static final String SEPARATOR = new String(new char[50]).replace('\0', '-');
     private final ChatBotConfig config;
@@ -59,10 +62,13 @@ public final class ChatBot {
     /**
      * Lists all tasks on the console.
      * The tasks are numbered.
+     * @param predicate a filtering condition for tasks
      */
-    public void denumerateTasks() {
+    public void denumerateTasks(Predicate<Task> predicate) {
         // TODO: What to say if there are no tasks?
-        say(config.FetchComment(CommentTopic.ListingTask, CommentContext.OfMemo(taskList, null)));
+
+        this.say(this.config.FetchComment(CommentTopic.ListingTask,
+                                          CommentContext.OfTaskList(this.taskList.where(predicate), null)));
     }
 
     /**

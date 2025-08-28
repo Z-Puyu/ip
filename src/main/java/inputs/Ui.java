@@ -11,11 +11,11 @@ import java.util.StringTokenizer;
 import java.util.function.Consumer;
 
 public class Ui {
-    private final Map<String, InputAction> actions = new HashMap<>();
+    private final Parser parser = new Parser();
     private final Map<InputAction, Set<Consumer<InputCommand>>> listeners = new HashMap<>();
 
     public Ui link(String command, InputAction action, Consumer<InputCommand> handler) {
-        this.actions.put(command, action);
+        this.parser.link(command, action);
         return this.addListener(action, handler);
     }
 
@@ -55,14 +55,10 @@ public class Ui {
         this.listeners.clear();
     }
 
-    private InputAction interpret(String command) {
-        return this.actions.getOrDefault(command, InputAction.Undefined);
-    }
-
     private void handle(String input) {
         StringTokenizer st = new StringTokenizer(input, " ");
         String text = st.nextToken();
-        InputAction action = this.interpret(text);
+        InputAction action = this.parser.interpret(text);
         InputCommand command = new InputCommand(action, input, st);
         if (this.listeners.containsKey(action)) {
             this.listeners.get(action).forEach(consumer -> consumer.accept(command));

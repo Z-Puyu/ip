@@ -1,19 +1,16 @@
 package common;
 
+import java.io.IOException;
+
 import comments.CommentContext;
 import comments.CommentTopic;
 import inputs.InputCommand;
 import reminders.EmptyTaskException;
-import reminders.TaskList;
 import reminders.Task;
+import reminders.TaskList;
 import reminders.UndefinedDeadlineException;
 import reminders.UndefinedTimeFrameException;
 
-import java.io.IOException;
-
-/**
- * A chatbot that can be used to interact with the user.
- */
 public final class ChatBot {
     private static final String SEPARATOR = new String(new char[50]).replace('\0', '-');
     private final ChatBotConfig config;
@@ -36,12 +33,12 @@ public final class ChatBot {
      * @param index the index of the task
      */
     public void markTask(int index) {
-        if (index < 1 || index > this.taskList.size()) {
-            this.say(this.config.FetchComment(CommentTopic.InvalidTask, CommentContext.OfTask(null, -1)));
+        if (index < 1 || index > taskList.size()) {
+            say(config.FetchComment(CommentTopic.InvalidTask, CommentContext.OfTask(null, -1)));
         } else {
-            Task task = this.taskList.get(index - 1);
+            Task task = taskList.get(index - 1);
             task.complete();
-            this.say(this.config.FetchComment(CommentTopic.TaskIsDone, CommentContext.OfTask(task, index)));
+            say(config.FetchComment(CommentTopic.TaskIsDone, CommentContext.OfTask(task, index)));
         }
     }
 
@@ -50,12 +47,12 @@ public final class ChatBot {
      * @param index the index of the task
      */
     public void unmarkTask(int index) {
-        if (index < 1 || index > this.taskList.size()) {
-            this.say(this.config.FetchComment(CommentTopic.InvalidTask, CommentContext.OfTask(null, -1)));
+        if (index < 1 || index > taskList.size()) {
+            say(config.FetchComment(CommentTopic.InvalidTask, CommentContext.OfTask(null, -1)));
         } else {
-            Task task = this.taskList.get(index - 1);
+            Task task = taskList.get(index - 1);
             task.reset();
-            this.say(this.config.FetchComment(CommentTopic.TaskIsReset, CommentContext.OfTask(task, index)));
+            say(config.FetchComment(CommentTopic.TaskIsReset, CommentContext.OfTask(task, index)));
         }
     }
 
@@ -65,7 +62,7 @@ public final class ChatBot {
      */
     public void denumerateTasks() {
         // TODO: What to say if there are no tasks?
-        this.say(this.config.FetchComment(CommentTopic.ListingTask, CommentContext.OfMemo(this.taskList, null)));
+        say(config.FetchComment(CommentTopic.ListingTask, CommentContext.OfMemo(taskList, null)));
     }
 
     /**
@@ -74,7 +71,7 @@ public final class ChatBot {
      * @return true if the task was added, false otherwise
      */
     public boolean addTask(Task task) {
-        return this.taskList.add(task);
+        return taskList.add(task);
     }
 
     /**
@@ -84,15 +81,15 @@ public final class ChatBot {
     public void createTask(InputCommand command) {
         try {
             Task task = Task.from(command);
-            if (this.addTask(task)) {
-                this.say(this.config.FetchComment(CommentTopic.AddTask, CommentContext.OfMemo(this.taskList, task)));
+            if (addTask(task)) {
+                say(config.FetchComment(CommentTopic.AddTask, CommentContext.OfMemo(taskList, task)));
             }
         } catch (EmptyTaskException e) {
-            this.say(this.config.FetchComment(CommentTopic.TaskWithoutDescription, CommentContext.OfTask(null, -1)));
+            say(config.FetchComment(CommentTopic.TaskWithoutDescription, CommentContext.OfTask(null, -1)));
         } catch (UndefinedDeadlineException e) {
-            this.say(this.config.FetchComment(CommentTopic.UndefinedDeadline, CommentContext.OfTask(null, -1)));
+            say(config.FetchComment(CommentTopic.UndefinedDeadline, CommentContext.OfTask(null, -1)));
         } catch (UndefinedTimeFrameException e) {
-            this.say(this.config.FetchComment(CommentTopic.UndefinedEventTime, CommentContext.OfTask(null, -1)));
+            say(config.FetchComment(CommentTopic.UndefinedEventTime, CommentContext.OfTask(null, -1)));
         }
     }
 
@@ -100,22 +97,22 @@ public final class ChatBot {
      * Prints the bot's logo to the console.
      */
     public void showLogo() {
-        System.out.println(this.config.getLogo() + '\n' + ChatBot.SEPARATOR);
+        System.out.println(config.getLogo() + '\n' + ChatBot.SEPARATOR);
     }
 
     /**
      * Prints the greeting to the console.
      */
     public void greetUser() {
-        System.out.println(this.config.getGreeting() + ChatBot.SEPARATOR);
+        System.out.println(config.getGreeting() + ChatBot.SEPARATOR);
     }
 
     /**
      * Prints the farewell to the console.
      */
     public void sayGoodbye() throws IOException {
-        Storage.save(this.taskList);
-        System.out.println(ChatBot.SEPARATOR + '\n' + this.config.getFarewell());
+        Storage.save(taskList);
+        System.out.println(ChatBot.SEPARATOR + '\n' + config.getFarewell());
     }
 
     /**
@@ -123,12 +120,12 @@ public final class ChatBot {
      * @param command the input command
      */
     public void alert(InputCommand command) {
-        this.say(this.config.FetchComment(CommentTopic.UndefinedCommand, CommentContext.OfCommand(command)));
+        say(config.FetchComment(CommentTopic.UndefinedCommand, CommentContext.OfCommand(command)));
     }
 
     @Override
     public String toString() {
-        return this.config.getName();
+        return config.getName();
     }
 
     /**
@@ -136,11 +133,11 @@ public final class ChatBot {
      * @param index the index of the task
      */
     public void deleteTask(int index) {
-        Task removed = this.taskList.removeAt(index);
+        Task removed = taskList.removeAt(index);
         if (removed == null) {
-            this.say(this.config.FetchComment(CommentTopic.InvalidTask, CommentContext.OfTask(null, index)));
+            say(config.FetchComment(CommentTopic.InvalidTask, CommentContext.OfTask(null, index)));
         } else {
-            this.say(this.config.FetchComment(CommentTopic.RemoveTask, CommentContext.OfTask(removed, index)));
+            say(config.FetchComment(CommentTopic.RemoveTask, CommentContext.OfTask(removed, index)));
         }
     }
 }

@@ -17,7 +17,7 @@ public class TaskList implements Iterable<Task> {
      * @return the number of tasks
      */
     public int size() {
-        return this.tasks.size();
+        return tasks.size();
     }
 
     /**
@@ -26,7 +26,7 @@ public class TaskList implements Iterable<Task> {
      * @return true if the task was added, false otherwise
      */
     public boolean add(Task task) {
-        return this.tasks.add(task);
+        return tasks.add(task);
     }
 
     /**
@@ -35,7 +35,7 @@ public class TaskList implements Iterable<Task> {
      * @return the task
      */
     public Task get(int index) {
-        return this.tasks.get(index);
+        return tasks.get(index);
     }
 
     /**
@@ -44,21 +44,21 @@ public class TaskList implements Iterable<Task> {
      * @return the task
      */
     public Task removeAt(int index) {
-        return this.tasks.remove(index);
+        return tasks.remove(index);
     }
 
     @Override
     public Iterator<Task> iterator() {
-        return this.tasks.iterator();
+        return tasks.iterator();
     }
 
     @Override
     public void forEach(Consumer<? super Task> action) {
-        this.tasks.forEach(action);
+        tasks.forEach(action);
     }
 
     @Override
     public Spliterator<Task> spliterator() {
-        return this.tasks.spliterator();
+        return tasks.spliterator();
     }
 }

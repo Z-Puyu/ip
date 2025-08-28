@@ -12,8 +12,7 @@ import comments.SheogorathUndefinedCommandCommenter;
 import comments.SheogorathUndefinedDeadlineCommenter;
 import comments.SheogorathUndefinedTimeFrameCommenter;
 import inputs.InputAction;
-import inputs.InputHandler;
-import reminders.Memo;
+import inputs.Ui;
 
 import java.io.IOException;
 
@@ -22,7 +21,7 @@ public class Application {
 
     private boolean isRunning;
     private final ChatBot bot;
-    private final InputHandler input = new InputHandler();
+    private final Ui input = new Ui();
 
     private Application() {
         String logo = """

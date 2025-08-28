@@ -10,16 +10,16 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.function.Consumer;
 
-public class InputHandler {
+public class Ui {
     private final Map<String, InputAction> actions = new HashMap<>();
     private final Map<InputAction, Set<Consumer<InputCommand>>> listeners = new HashMap<>();
 
-    public InputHandler link(String command, InputAction action, Consumer<InputCommand> handler) {
+    public Ui link(String command, InputAction action, Consumer<InputCommand> handler) {
         this.actions.put(command, action);
         return this.addListener(action, handler);
     }
 
-    public InputHandler addListener(InputAction action, Consumer<InputCommand> listener) {
+    public Ui addListener(InputAction action, Consumer<InputCommand> listener) {
         if (action == null || listener == null) {
             return this;
         }
@@ -35,7 +35,7 @@ public class InputHandler {
         return this;
     }
 
-    public InputHandler removeListener(InputAction action, Consumer<InputCommand> listener) {
+    public Ui removeListener(InputAction action, Consumer<InputCommand> listener) {
         if (listener != null && action != null && this.listeners.containsKey(action)) {
             this.listeners.get(action).remove(listener);
         }
@@ -43,7 +43,7 @@ public class InputHandler {
         return this;
     }
 
-    public InputHandler clearListener(InputAction action) {
+    public Ui clearListener(InputAction action) {
         if (action != null) {
             this.listeners.remove(action);
         }

@@ -1,14 +1,14 @@
 package reminders;
 
-import inputs.InputCommand;
-import common.TimeParser;
-
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.Temporal;
+
+import common.TimeParser;
+import inputs.InputCommand;
 
 public abstract class Task implements Serializable {
     @Serial
@@ -65,24 +65,24 @@ public abstract class Task implements Serializable {
     }
 
     public String getDescription() {
-        return this.description;
+        return description;
     }
 
     public boolean isDone() {
-        return this.isDone;
+        return isDone;
     }
 
     public void complete() {
-        this.isDone = true;
+        isDone = true;
     }
 
     public void reset() {
-        this.isDone = false;
+        isDone = false;
     }
 
     @Override
     public String toString() {
-        return String.format("[%c] %s", this.isDone ? 'X' : ' ', this.description);
+        return String.format("[%c] %s", isDone ? 'X' : ' ', description);
     }
 
     private static class ToDo extends Task {
@@ -92,7 +92,7 @@ public abstract class Task implements Serializable {
 
         @Override
         public String toString() {
-            return String.format("[T][%c] %s", this.isDone() ? 'X' : ' ', this.getDescription());
+            return String.format("[T][%c] %s", isDone() ? 'X' : ' ', getDescription());
         }
     }
 
@@ -106,16 +106,16 @@ public abstract class Task implements Serializable {
 
         @Override
         public String toString() {
-            if (this.date instanceof LocalDate d) {
-                return String.format("[D][%c] %s (by: %s)", this.isDone() ? 'X' : ' ', this.getDescription(),
+            if (date instanceof LocalDate d) {
+                return String.format("[D][%c] %s (by: %s)", isDone() ? 'X' : ' ', getDescription(),
                                      d.equals(LocalDate.now()) ? "today" : d.format(DATE_FORMAT));
-            } else if (this.date instanceof LocalDateTime dateTime) {
-                return String.format("[D][%c] %s (by: %s)", this.isDone() ? 'X' : ' ', this.getDescription(),
+            } else if (date instanceof LocalDateTime dateTime) {
+                return String.format("[D][%c] %s (by: %s)", isDone() ? 'X' : ' ', getDescription(),
                                      dateTime.toLocalDate().equals(LocalDate.now())
                                      ? "today " + dateTime.toLocalTime() : dateTime.format(DATE_TIME_FORMAT));
             }
 
-            return String.format("[D][%c] %s (by: %s)", this.isDone() ? 'X' : ' ', this.getDescription(), this.date);
+            return String.format("[D][%c] %s (by: %s)", isDone() ? 'X' : ' ', getDescription(), date);
         }
     }
 
@@ -131,25 +131,25 @@ public abstract class Task implements Serializable {
 
         @Override
         public String toString() {
-            String start = this.startTime.toString();
-            if (this.startTime instanceof LocalDateTime s) {
+            String start = startTime.toString();
+            if (startTime instanceof LocalDateTime s) {
                 start = s.toLocalDate().equals(LocalDate.now())
                         ? "today " + s.toLocalTime()
                         : s.format(DATE_TIME_FORMAT);
-            } else if (this.startTime instanceof LocalDate d) {
+            } else if (startTime instanceof LocalDate d) {
                 start = d.equals(LocalDate.now()) ? "today" : d.format(DATE_FORMAT);
             }
 
-            String end = this.endTime.toString();
-            if (this.endTime instanceof LocalDateTime e) {
+            String end = endTime.toString();
+            if (endTime instanceof LocalDateTime e) {
                 end = e.toLocalDate().equals(LocalDate.now())
                       ? "today " + e.toLocalTime()
                       : e.format(DATE_TIME_FORMAT);
-            } else if (this.endTime instanceof LocalDate e) {
+            } else if (endTime instanceof LocalDate e) {
                 end = e.equals(LocalDate.now()) ? "today" : e.format(DATE_FORMAT);
             }
 
-            return String.format("[E][%c] %s (from: %s to: %s)", this.isDone() ? 'X' : ' ', this.getDescription(),
+            return String.format("[E][%c] %s (from: %s to: %s)", isDone() ? 'X' : ' ', getDescription(),
                                  start, end);
         }
     }

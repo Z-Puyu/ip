@@ -8,22 +8,22 @@ import java.util.function.Function;
 
 public record InputCommand(InputAction action, String text, StringTokenizer args) {
     public <T> T nextArg(Function<String, T> parser) {
-        String arg = this.readUntil(' ');
+        String arg = readUntil(' ');
         if (arg.isBlank()) {
-            throw new IllegalArgumentException(String.format("Command %s is used with wrong arguments", this.text));
+            throw new IllegalArgumentException(String.format("Command %s is used with wrong arguments", text));
         }
 
         return parser.apply(arg);
     }
 
     public String nextArg() {
-        return this.readUntil(' ');
+        return readUntil(' ');
     }
 
     public String readUntil(char delimiter) {
         List<String> tokens = new ArrayList<>();
-        while (this.args.hasMoreTokens()) {
-            String token = this.args.nextToken();
+        while (args.hasMoreTokens()) {
+            String token = args.nextToken();
             if (token.charAt(0) == delimiter) {
                 break;
             }
@@ -36,8 +36,8 @@ public record InputCommand(InputAction action, String text, StringTokenizer args
 
     public String readUntil(String delimiter) {
         List<String> tokens = new ArrayList<>();
-        while (this.args.hasMoreTokens()) {
-            String token = this.args.nextToken();
+        while (args.hasMoreTokens()) {
+            String token = args.nextToken();
             if (token.startsWith(delimiter)) {
                 break;
             }
@@ -50,8 +50,8 @@ public record InputCommand(InputAction action, String text, StringTokenizer args
 
     public String readUntil(String... delimiters) {
         List<String> tokens = new ArrayList<>();
-        while (this.args.hasMoreTokens()) {
-            String token = this.args.nextToken();
+        while (args.hasMoreTokens()) {
+            String token = args.nextToken();
             if (Arrays.stream(delimiters).anyMatch(token::startsWith)) {
                 break;
             }

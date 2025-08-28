@@ -13,6 +13,9 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A storage for tasks. Manages serialisation and deserialisation.
+ */
 public final class Storage {
     private static final Path DATA_DIR = Paths.get("src", "main", "data");
     private static final Path SAVE_FILE = DATA_DIR.resolve("tasks.dat");

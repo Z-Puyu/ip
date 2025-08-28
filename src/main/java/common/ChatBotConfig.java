@@ -8,6 +8,9 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * A configuration for a chatbot. This allows different configurations for different bots.
+ */
 public class ChatBotConfig {
     private String name;
     private String logo;

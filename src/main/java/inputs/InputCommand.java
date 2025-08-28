@@ -6,7 +6,16 @@ import java.util.List;
 import java.util.StringTokenizer;
 import java.util.function.Function;
 
+/**
+ * A command that can be interpreted by the application.
+ */
 public record InputCommand(InputAction action, String text, StringTokenizer args) {
+    /**
+     * Parses the next argument as a specific type.
+     * @param parser the parser function
+     * @return the parsed argument
+     * @param <T> the type of the parsed argument
+     */
     public <T> T nextArg(Function<String, T> parser) {
         String arg = this.readUntil(' ');
         if (arg.isBlank()) {
@@ -16,10 +25,19 @@ public record InputCommand(InputAction action, String text, StringTokenizer args
         return parser.apply(arg);
     }
 
+    /**
+     * Reads the next argument.
+     * @return the next argument
+     */
     public String nextArg() {
         return this.readUntil(' ');
     }
 
+    /**
+     * Reads the next argument until the given delimiter.
+     * @param delimiter the delimiter to stop reading at
+     * @return the next argument
+     */
     public String readUntil(char delimiter) {
         List<String> tokens = new ArrayList<>();
         while (this.args.hasMoreTokens()) {
@@ -34,6 +52,11 @@ public record InputCommand(InputAction action, String text, StringTokenizer args
         return String.join(" ", tokens);
     }
 
+    /**
+     * Reads the next argument until the given delimiter.
+     * @param delimiter the delimiter to stop reading at
+     * @return the next argument
+     */
     public String readUntil(String delimiter) {
         List<String> tokens = new ArrayList<>();
         while (this.args.hasMoreTokens()) {
@@ -48,6 +71,11 @@ public record InputCommand(InputAction action, String text, StringTokenizer args
         return String.join(" ", tokens);
     }
 
+    /**
+     * Reads the next argument until any of the given delimiters.
+     * @param delimiters the delimiters to stop reading at
+     * @return the next argument
+     */
     public String readUntil(String... delimiters) {
         List<String> tokens = new ArrayList<>();
         while (this.args.hasMoreTokens()) {

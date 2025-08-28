@@ -97,24 +97,19 @@ public class Application {
         this.isRunning = true;
         this.bot.showLogo();
         this.bot.greetUser();
-        this.bot.recollectTasks();
+        Storage.load(this.bot);
         this.setUpInput();
         this.input.run();
     }
 
     public void quit() {
-        this.bot.sayGoodbye();
         try {
-            this.saveData();
+            this.bot.sayGoodbye();
         } catch (IOException e) {
             this.bot.say("Failed to save data.");
         }
 
         this.isRunning = false;
         System.exit(0);
-    }
-
-    private void saveData() throws IOException {
-        this.bot.rememberTasks();
     }
 }

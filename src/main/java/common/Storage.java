@@ -13,11 +13,11 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class SaveDataManager {
+public final class Storage {
     private static final Path DATA_DIR = Paths.get("src", "main", "data");
     private static final Path SAVE_FILE = DATA_DIR.resolve("tasks.dat");
 
-    private SaveDataManager() { }
+    private Storage() { }
 
     public static void save(Memo memo) throws IOException {
         if (Files.notExists(DATA_DIR)) {
@@ -42,7 +42,7 @@ public final class SaveDataManager {
         }
     }
     
-    public static List<Task> loadTasks() {
+    private static List<Task> loadTasks() {
         System.out.println("Loading tasks from " + SAVE_FILE);
         List<Task> tasks = new ArrayList<>();
         if (Files.notExists(SAVE_FILE)) {
@@ -59,5 +59,11 @@ public final class SaveDataManager {
         }
 
         return tasks;
+    }
+
+    public static void load(ChatBot bot) {
+        for (Task task : Storage.loadTasks()) {
+            bot.addTask(task);
+        }
     }
 }

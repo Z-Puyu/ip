@@ -49,10 +49,14 @@ public final class ChatBot {
         this.say(this.config.FetchComment(CommentTopic.ListingTask, CommentContext.OfMemo(this.memo, null)));
     }
 
+    public boolean addTask(Task task) {
+        return this.memo.add(task);
+    }
+
     public void createTask(InputCommand command) {
         try {
             Task task = Task.from(command);
-            if (this.memo.add(task)) {
+            if (this.addTask(task)) {
                 this.say(this.config.FetchComment(CommentTopic.AddTask, CommentContext.OfMemo(this.memo, task)));
             }
         } catch (EmptyTaskException e) {
@@ -72,7 +76,8 @@ public final class ChatBot {
         System.out.println(this.config.getGreeting() + ChatBot.SEPARATOR);
     }
 
-    public void sayGoodbye() {
+    public void sayGoodbye() throws IOException {
+        Storage.save(this.memo);
         System.out.println(ChatBot.SEPARATOR + '\n' + this.config.getFarewell());
     }
 
@@ -91,16 +96,6 @@ public final class ChatBot {
             this.say(this.config.FetchComment(CommentTopic.InvalidTask, CommentContext.OfTask(null, index)));
         } else {
             this.say(this.config.FetchComment(CommentTopic.RemoveTask, CommentContext.OfTask(removed, index)));
-        }
-    }
-
-    public void rememberTasks() throws IOException {
-        SaveDataManager.save(this.memo);
-    }
-
-    public void recollectTasks() {
-        for (Task task : SaveDataManager.loadTasks()) {
-            this.memo.add(task);
         }
     }
 }

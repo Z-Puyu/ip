@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 
-public class Memo implements Iterable<Task> {
+public class TaskList implements Iterable<Task> {
     private final List<Task> tasks = new ArrayList<>();
 
     public int size() {

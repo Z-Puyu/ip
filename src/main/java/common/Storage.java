@@ -1,6 +1,6 @@
 package common;
 
-import reminders.Memo;
+import reminders.TaskList;
 import reminders.Task;
 
 import java.io.IOException;
@@ -19,7 +19,7 @@ public final class Storage {
 
     private Storage() { }
 
-    public static void save(Memo memo) throws IOException {
+    public static void save(TaskList taskList) throws IOException {
         if (Files.notExists(DATA_DIR)) {
             Files.createDirectories(DATA_DIR);
         }
@@ -33,8 +33,8 @@ public final class Storage {
                 )
         )) {
             // Write the number of tasks, then each task
-            oos.writeInt(memo.size());
-            for (Task task : memo) {
+            oos.writeInt(taskList.size());
+            for (Task task : taskList) {
                 oos.writeObject(task);
             }
 

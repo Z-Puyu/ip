@@ -61,8 +61,8 @@ public class TimeParser {
     private static LocalDate parseDate(String input) {
         Matcher m = YEAR.matcher(input);
         int year = m.matches() ? Integer.parseInt(m.group(1)) : LocalDate.now().getYear();
-        int month = 1;
-        int day = 1;
+        int month;
+        int day;
 
         m = MM_DD_DASH.matcher(input);
         if (m.matches()) {

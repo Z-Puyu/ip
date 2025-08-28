@@ -1,8 +1,21 @@
 package common;
 
-import comments.*;
+import comments.CommentTopic;
+import comments.SheogorathAddTaskCommenter;
+import comments.SheogorathEmptyTaskCommenter;
+import comments.SheogorathInvalidTaskCommenter;
+import comments.SheogorathListTasksCommenter;
+import comments.SheogorathRemoveTaskCommenter;
+import comments.SheogorathTaskDoneCommenter;
+import comments.SheogorathTaskResetCommenter;
+import comments.SheogorathUndefinedCommandCommenter;
+import comments.SheogorathUndefinedDeadlineCommenter;
+import comments.SheogorathUndefinedTimeFrameCommenter;
 import inputs.InputAction;
 import inputs.InputHandler;
+import reminders.Memo;
+
+import java.io.IOException;
 
 public class Application {
     private static Application instance;
@@ -85,13 +98,24 @@ public class Application {
         this.isRunning = true;
         this.bot.showLogo();
         this.bot.greetUser();
+        this.bot.recollectTasks();
         this.setUpInput();
         this.input.run();
     }
 
     public void quit() {
         this.bot.sayGoodbye();
+        try {
+            this.saveData();
+        } catch (IOException e) {
+            this.bot.say("Failed to save data.");
+        }
+
         this.isRunning = false;
         System.exit(0);
+    }
+
+    private void saveData() throws IOException {
+        this.bot.rememberTasks();
     }
 }

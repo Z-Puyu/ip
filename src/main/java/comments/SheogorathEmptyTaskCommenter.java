@@ -1,4 +1,4 @@
-﻿package comments;
+package comments;
 
 public class SheogorathEmptyTaskCommenter implements Commenter {
     @Override

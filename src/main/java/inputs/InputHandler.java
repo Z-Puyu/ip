@@ -2,7 +2,12 @@ package inputs;
 
 import common.Application;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Scanner;
+import java.util.Set;
+import java.util.StringTokenizer;
 import java.util.function.Consumer;
 
 public class InputHandler {

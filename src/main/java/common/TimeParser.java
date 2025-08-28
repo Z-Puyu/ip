@@ -10,15 +10,11 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * A parser that can parse a string into a {@link Temporal}.
+ */
 public class TimeParser {
-    /**
-     * Backward-compatible API returning LocalDateTime. If input has only a date, returns atStartOfDay.
-     */
-    public static Temporal parse(String time) {
-        return TimeParser.parseTemporal(time);
-    }
-
-    public static Temporal parseTemporal(String input) {
+    public static Temporal parse(String input) {
         if (input == null) {
             throw new IllegalArgumentException("time cannot be null");
         }

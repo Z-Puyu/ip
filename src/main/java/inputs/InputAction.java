@@ -1,5 +1,8 @@
 package inputs;
 
+/**
+ * Represents an action that can be performed by the user.
+ */
 public enum InputAction {
     Quit,
     Undefined,

@@ -10,6 +10,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.Temporal;
 
+/**
+ * Represents a task. Contains a description and a boolean indicating whether it is done.
+ * A task can be created as a to-do, a deadline or an event.
+ * This class is serialisable.
+ */
 public abstract class Task implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -24,6 +29,14 @@ public abstract class Task implements Serializable {
         this.description = description;
     }
 
+    /**
+     * Creates a task from an input command.
+     * @param command the input command
+     * @return the task
+     * @throws EmptyTaskException if the description is empty
+     * @throws UndefinedTimeFrameException if the start or end time is empty
+     * @throws UndefinedDeadlineException if the deadline is empty
+     */
     public static Task from(InputCommand command) throws EmptyTaskException, UndefinedTimeFrameException,
             UndefinedDeadlineException {
         if (!command.args().hasMoreTokens()) {

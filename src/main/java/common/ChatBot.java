@@ -4,7 +4,7 @@ import comments.CommentContext;
 import comments.CommentTopic;
 import inputs.InputCommand;
 import reminders.EmptyTaskException;
-import reminders.Memo;
+import reminders.TaskList;
 import reminders.Task;
 import reminders.UndefinedDeadlineException;
 import reminders.UndefinedTimeFrameException;
@@ -14,7 +14,7 @@ import java.io.IOException;
 public final class ChatBot {
     private static final String SEPARATOR = new String(new char[50]).replace('\0', '-');
     private final ChatBotConfig config;
-    private final Memo memo = new Memo();
+    private final TaskList taskList = new TaskList();
 
     public ChatBot(ChatBotConfig config) {
         this.config = config;
@@ -25,20 +25,20 @@ public final class ChatBot {
     }
 
     public void markTask(int index) {
-        if (index < 1 || index > this.memo.size()) {
+        if (index < 1 || index > this.taskList.size()) {
             this.say(this.config.FetchComment(CommentTopic.InvalidTask, CommentContext.OfTask(null, -1)));
         } else {
-            Task task = this.memo.get(index - 1);
+            Task task = this.taskList.get(index - 1);
             task.complete();
             this.say(this.config.FetchComment(CommentTopic.TaskIsDone, CommentContext.OfTask(task, index)));
         }
     }
 
     public void unmarkTask(int index) {
-        if (index < 1 || index > this.memo.size()) {
+        if (index < 1 || index > this.taskList.size()) {
             this.say(this.config.FetchComment(CommentTopic.InvalidTask, CommentContext.OfTask(null, -1)));
         } else {
-            Task task = this.memo.get(index - 1);
+            Task task = this.taskList.get(index - 1);
             task.reset();
             this.say(this.config.FetchComment(CommentTopic.TaskIsReset, CommentContext.OfTask(task, index)));
         }
@@ -46,14 +46,18 @@ public final class ChatBot {
 
     public void denumerateTasks() {
         // TODO: What to say if there are no tasks?
-        this.say(this.config.FetchComment(CommentTopic.ListingTask, CommentContext.OfMemo(this.memo, null)));
+        this.say(this.config.FetchComment(CommentTopic.ListingTask, CommentContext.OfMemo(this.taskList, null)));
+    }
+
+    public boolean addTask(Task task) {
+        return this.taskList.add(task);
     }
 
     public void createTask(InputCommand command) {
         try {
             Task task = Task.from(command);
-            if (this.memo.add(task)) {
-                this.say(this.config.FetchComment(CommentTopic.AddTask, CommentContext.OfMemo(this.memo, task)));
+            if (this.addTask(task)) {
+                this.say(this.config.FetchComment(CommentTopic.AddTask, CommentContext.OfMemo(this.taskList, task)));
             }
         } catch (EmptyTaskException e) {
             this.say(this.config.FetchComment(CommentTopic.TaskWithoutDescription, CommentContext.OfTask(null, -1)));
@@ -72,7 +76,8 @@ public final class ChatBot {
         System.out.println(this.config.getGreeting() + ChatBot.SEPARATOR);
     }
 
-    public void sayGoodbye() {
+    public void sayGoodbye() throws IOException {
+        Storage.save(this.taskList);
         System.out.println(ChatBot.SEPARATOR + '\n' + this.config.getFarewell());
     }
 
@@ -86,21 +91,11 @@ public final class ChatBot {
     }
 
     public void deleteTask(int index) {
-        Task removed = this.memo.removeAt(index);
+        Task removed = this.taskList.removeAt(index);
         if (removed == null) {
             this.say(this.config.FetchComment(CommentTopic.InvalidTask, CommentContext.OfTask(null, index)));
         } else {
             this.say(this.config.FetchComment(CommentTopic.RemoveTask, CommentContext.OfTask(removed, index)));
-        }
-    }
-
-    public void rememberTasks() throws IOException {
-        SaveDataManager.save(this.memo);
-    }
-
-    public void recollectTasks() {
-        for (Task task : SaveDataManager.loadTasks()) {
-            this.memo.add(task);
         }
     }
 }

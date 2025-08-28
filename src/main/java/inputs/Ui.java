@@ -10,16 +10,16 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.function.Consumer;
 
-public class InputHandler {
-    private final Map<String, InputAction> actions = new HashMap<>();
+public class Ui {
+    private final Parser parser = new Parser();
     private final Map<InputAction, Set<Consumer<InputCommand>>> listeners = new HashMap<>();
 
-    public InputHandler link(String command, InputAction action, Consumer<InputCommand> handler) {
-        this.actions.put(command, action);
+    public Ui link(String command, InputAction action, Consumer<InputCommand> handler) {
+        this.parser.link(command, action);
         return this.addListener(action, handler);
     }
 
-    public InputHandler addListener(InputAction action, Consumer<InputCommand> listener) {
+    public Ui addListener(InputAction action, Consumer<InputCommand> listener) {
         if (action == null || listener == null) {
             return this;
         }
@@ -35,7 +35,7 @@ public class InputHandler {
         return this;
     }
 
-    public InputHandler removeListener(InputAction action, Consumer<InputCommand> listener) {
+    public Ui removeListener(InputAction action, Consumer<InputCommand> listener) {
         if (listener != null && action != null && this.listeners.containsKey(action)) {
             this.listeners.get(action).remove(listener);
         }
@@ -43,7 +43,7 @@ public class InputHandler {
         return this;
     }
 
-    public InputHandler clearListener(InputAction action) {
+    public Ui clearListener(InputAction action) {
         if (action != null) {
             this.listeners.remove(action);
         }
@@ -55,14 +55,10 @@ public class InputHandler {
         this.listeners.clear();
     }
 
-    private InputAction interpret(String command) {
-        return this.actions.getOrDefault(command, InputAction.Undefined);
-    }
-
     private void handle(String input) {
         StringTokenizer st = new StringTokenizer(input, " ");
         String text = st.nextToken();
-        InputAction action = this.interpret(text);
+        InputAction action = this.parser.interpret(text);
         InputCommand command = new InputCommand(action, input, st);
         if (this.listeners.containsKey(action)) {
             this.listeners.get(action).forEach(consumer -> consumer.accept(command));

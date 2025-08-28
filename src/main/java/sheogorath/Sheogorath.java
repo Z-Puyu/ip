@@ -1,3 +1,5 @@
+package sheogorath;
+
 import common.Application;
 
 public class Sheogorath {

@@ -12,8 +12,7 @@ import comments.SheogorathUndefinedCommandCommenter;
 import comments.SheogorathUndefinedDeadlineCommenter;
 import comments.SheogorathUndefinedTimeFrameCommenter;
 import inputs.InputAction;
-import inputs.InputHandler;
-import reminders.Memo;
+import inputs.Ui;
 
 import java.io.IOException;
 
@@ -22,7 +21,7 @@ public class Application {
 
     private boolean isRunning;
     private final ChatBot bot;
-    private final InputHandler input = new InputHandler();
+    private final Ui input = new Ui();
 
     private Application() {
         String logo = """
@@ -98,24 +97,19 @@ public class Application {
         this.isRunning = true;
         this.bot.showLogo();
         this.bot.greetUser();
-        this.bot.recollectTasks();
+        Storage.load(this.bot);
         this.setUpInput();
         this.input.run();
     }
 
     public void quit() {
-        this.bot.sayGoodbye();
         try {
-            this.saveData();
+            this.bot.sayGoodbye();
         } catch (IOException e) {
             this.bot.say("Failed to save data.");
         }
 
         this.isRunning = false;
         System.exit(0);
-    }
-
-    private void saveData() throws IOException {
-        this.bot.rememberTasks();
     }
 }

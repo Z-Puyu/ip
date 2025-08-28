@@ -1,13 +1,21 @@
 package reminders;
 
 import inputs.InputCommand;
+import common.TimeParser;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.Temporal;
 
 public abstract class Task implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
+
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("uuuu-MM-dd");
+    private static final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm");
 
     private final String description;
     private boolean isDone;
@@ -89,35 +97,60 @@ public abstract class Task implements Serializable {
     }
 
     private static class Deadline extends Task {
-        private String date;
+        private Temporal date;
 
         public Deadline(String description, String date) {
             super(description);
-            this.date = date;
+            this.date = TimeParser.parse(date);
         }
 
         @Override
         public String toString() {
+            if (this.date instanceof LocalDate d) {
+                return String.format("[D][%c] %s (by: %s)", this.isDone() ? 'X' : ' ', this.getDescription(),
+                                     d.equals(LocalDate.now()) ? "today" : d.format(DATE_FORMAT));
+            } else if (this.date instanceof LocalDateTime dateTime) {
+                return String.format("[D][%c] %s (by: %s)", this.isDone() ? 'X' : ' ', this.getDescription(),
+                                     dateTime.toLocalDate().equals(LocalDate.now())
+                                     ? "today " + dateTime.toLocalTime() : dateTime.format(DATE_TIME_FORMAT));
+            }
+
             return String.format("[D][%c] %s (by: %s)", this.isDone() ? 'X' : ' ', this.getDescription(), this.date);
         }
     }
 
     private static class Event extends Task {
-        private String startTime;
-        private String endTime;
+        private Temporal startTime;
+        private Temporal endTime;
 
         public Event(String description, String startTime, String endTime) {
             super(description);
-            this.startTime = startTime;
-            this.endTime = endTime;
+            this.startTime = TimeParser.parse(startTime);
+            this.endTime = TimeParser.parse(endTime);
         }
 
         @Override
         public String toString() {
-            return String.format(
-                    "[E][%c] %s (from: %s to: %s)", this.isDone() ? 'X' : ' ', this.getDescription(),
-                    this.startTime, this.endTime
-            );
+            String start = this.startTime.toString();
+            if (this.startTime instanceof LocalDateTime s) {
+                start = s.toLocalDate().equals(LocalDate.now())
+                        ? "today " + s.toLocalTime()
+                        : s.format(DATE_TIME_FORMAT);
+            } else if (this.startTime instanceof LocalDate d) {
+                start = d.equals(LocalDate.now()) ? "today" : d.format(DATE_FORMAT);
+            }
+
+            String end = this.endTime.toString();
+            if (this.endTime instanceof LocalDateTime e) {
+                end = e.toLocalDate().equals(LocalDate.now())
+                      ? "today " + e.toLocalTime()
+                      : e.format(DATE_TIME_FORMAT);
+            } else if (this.endTime instanceof LocalDate e) {
+                end = e.equals(LocalDate.now()) ? "today" : e.format(DATE_FORMAT);
+            }
+
+            return String.format("[E][%c] %s (from: %s to: %s)", this.isDone() ? 'X' : ' ', this.getDescription(),
+                                 start, end);
         }
     }
 

@@ -15,6 +15,7 @@ public class TaskList implements Iterable<Task> {
 
     /**
      * Returns the number of tasks in the list.
+     *
      * @return the number of tasks
      */
     public int size() {
@@ -23,6 +24,7 @@ public class TaskList implements Iterable<Task> {
 
     /**
      * Adds a task to the list.
+     *
      * @param task the task
      * @return true if the task was added, false otherwise
      */
@@ -32,6 +34,7 @@ public class TaskList implements Iterable<Task> {
 
     /**
      * Gets a task from the list.
+     *
      * @param index the index of the task
      * @return the task
      */
@@ -41,6 +44,7 @@ public class TaskList implements Iterable<Task> {
 
     /**
      * Removes a task from the list.
+     *
      * @param index the index of the task
      * @return the task
      */
@@ -53,14 +57,14 @@ public class TaskList implements Iterable<Task> {
             return this.tasks;
         }
 
-        List<Task> result = new ArrayList<>();
+        List<Task> results = new ArrayList<>();
         for (Task task : this.tasks) {
             if (predicate.test(task)) {
-                result.add(task);
+                results.add(task);
             }
         }
 
-        return result;
+        return results;
     }
 
     @Override

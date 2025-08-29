@@ -31,11 +31,12 @@ public abstract class Task implements Serializable {
 
     /**
      * Creates a task from an input command.
+     *
      * @param command the input command
      * @return the task
-     * @throws EmptyTaskException if the description is empty
+     * @throws EmptyTaskException          if the description is empty
      * @throws UndefinedTimeFrameException if the start or end time is empty
-     * @throws UndefinedDeadlineException if the deadline is empty
+     * @throws UndefinedDeadlineException  if the deadline is empty
      */
     public static Task from(InputCommand command) throws EmptyTaskException, UndefinedTimeFrameException,
             UndefinedDeadlineException {
@@ -121,11 +122,11 @@ public abstract class Task implements Serializable {
         public String toString() {
             if (date instanceof LocalDate d) {
                 return String.format("[D][%c] %s (by: %s)", isDone() ? 'X' : ' ', getDescription(),
-                                     d.equals(LocalDate.now()) ? "today" : d.format(DATE_FORMAT));
+                        d.equals(LocalDate.now()) ? "today" : d.format(DATE_FORMAT));
             } else if (date instanceof LocalDateTime dateTime) {
                 return String.format("[D][%c] %s (by: %s)", isDone() ? 'X' : ' ', getDescription(),
-                                     dateTime.toLocalDate().equals(LocalDate.now())
-                                     ? "today " + dateTime.toLocalTime() : dateTime.format(DATE_TIME_FORMAT));
+                        dateTime.toLocalDate().equals(LocalDate.now())
+                                ? "today " + dateTime.toLocalTime() : dateTime.format(DATE_TIME_FORMAT));
             }
 
             return String.format("[D][%c] %s (by: %s)", isDone() ? 'X' : ' ', getDescription(), date);
@@ -156,14 +157,14 @@ public abstract class Task implements Serializable {
             String end = endTime.toString();
             if (endTime instanceof LocalDateTime e) {
                 end = e.toLocalDate().equals(LocalDate.now())
-                      ? "today " + e.toLocalTime()
-                      : e.format(DATE_TIME_FORMAT);
+                        ? "today " + e.toLocalTime()
+                        : e.format(DATE_TIME_FORMAT);
             } else if (endTime instanceof LocalDate e) {
                 end = e.equals(LocalDate.now()) ? "today" : e.format(DATE_FORMAT);
             }
 
             return String.format("[E][%c] %s (from: %s to: %s)", isDone() ? 'X' : ' ', getDescription(),
-                                 start, end);
+                    start, end);
         }
     }
 

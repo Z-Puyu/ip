@@ -12,9 +12,10 @@ import java.util.function.Function;
 public record InputCommand(InputAction action, String text, StringTokenizer args) {
     /**
      * Parses the next argument as a specific type.
+     *
      * @param parser the parser function
+     * @param <T>    the type of the parsed argument
      * @return the parsed argument
-     * @param <T> the type of the parsed argument
      */
     public <T> T nextArg(Function<String, T> parser) {
         String arg = readUntil(' ');
@@ -27,6 +28,7 @@ public record InputCommand(InputAction action, String text, StringTokenizer args
 
     /**
      * Reads the next argument.
+     *
      * @return the next argument
      */
     public String nextArg() {
@@ -35,6 +37,7 @@ public record InputCommand(InputAction action, String text, StringTokenizer args
 
     /**
      * Reads the next argument until the given delimiter.
+     *
      * @param delimiter the delimiter to stop reading at
      * @return the next argument
      */
@@ -54,6 +57,7 @@ public record InputCommand(InputAction action, String text, StringTokenizer args
 
     /**
      * Reads the next argument until the given delimiter.
+     *
      * @param delimiter the delimiter to stop reading at
      * @return the next argument
      */
@@ -73,6 +77,7 @@ public record InputCommand(InputAction action, String text, StringTokenizer args
 
     /**
      * Reads the next argument until any of the given delimiters.
+     *
      * @param delimiters the delimiters to stop reading at
      * @return the next argument
      */

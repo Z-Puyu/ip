@@ -44,7 +44,7 @@ public final class Storage {
             oos.flush();
         }
     }
-    
+
     private static List<Task> loadTasks() {
         List<Task> tasks = new ArrayList<>();
         if (Files.notExists(SAVE_FILE)) {
@@ -54,7 +54,7 @@ public final class Storage {
         try (ObjectInputStream ois = new ObjectInputStream(Files.newInputStream(SAVE_FILE))) {
             int count = ois.readInt();
             for (int i = 0; i < count; i += 1) {
-                tasks.add((Task)ois.readObject());
+                tasks.add((Task) ois.readObject());
             }
         } catch (IOException | ClassNotFoundException e) {
             return List.of();

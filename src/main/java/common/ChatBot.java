@@ -25,6 +25,7 @@ public final class ChatBot {
 
     /**
      * Prints a message to the console.
+     *
      * @param text the message
      */
     public void say(String text) {
@@ -33,6 +34,7 @@ public final class ChatBot {
 
     /**
      * Marks a task as done.
+     *
      * @param index the index of the task
      */
     public void markTask(int index) {
@@ -47,6 +49,7 @@ public final class ChatBot {
 
     /**
      * Marks a task as not done.
+     *
      * @param index the index of the task
      */
     public void unmarkTask(int index) {
@@ -62,17 +65,19 @@ public final class ChatBot {
     /**
      * Lists all tasks on the console.
      * The tasks are numbered.
+     *
      * @param predicate a filtering condition for tasks
      */
     public void denumerateTasks(Predicate<Task> predicate) {
         // TODO: What to say if there are no tasks?
 
-        this.say(this.config.FetchComment(CommentTopic.ListingTask,
-                                          CommentContext.OfTaskList(this.taskList.where(predicate), null)));
+        this.say(config.FetchComment(CommentTopic.ListingTask,
+                CommentContext.OfTaskList(taskList.where(predicate), null, taskList.size())));
     }
 
     /**
      * Adds a task to the list.
+     *
      * @param task the task
      * @return true if the task was added, false otherwise
      */
@@ -82,13 +87,14 @@ public final class ChatBot {
 
     /**
      * Creates a task from an input command.
+     *
      * @param command the input command
      */
     public void createTask(InputCommand command) {
         try {
             Task task = Task.from(command);
             if (addTask(task)) {
-                say(config.FetchComment(CommentTopic.AddTask, CommentContext.OfMemo(taskList, task)));
+                say(config.FetchComment(CommentTopic.AddTask, CommentContext.OfTaskList(taskList, task, taskList.size())));
             }
         } catch (EmptyTaskException e) {
             say(config.FetchComment(CommentTopic.TaskWithoutDescription, CommentContext.OfTask(null, -1)));
@@ -123,6 +129,7 @@ public final class ChatBot {
 
     /**
      * Prints an alert to the console.
+     *
      * @param command the input command
      */
     public void alert(InputCommand command) {
@@ -136,6 +143,7 @@ public final class ChatBot {
 
     /**
      * Deletes a task from the list.
+     *
      * @param index the index of the task
      */
     public void deleteTask(int index) {

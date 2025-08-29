@@ -14,6 +14,8 @@ import java.util.regex.Pattern;
  * A parser that can parse a string into a {@link Temporal}.
  */
 public class TimeParser {
+    private TimeParser() { }
+
     public static Temporal parse(String input) {
         if (input == null) {
             throw new IllegalArgumentException("time cannot be null");
@@ -110,8 +112,8 @@ public class TimeParser {
     }
 
     private static final Pattern DAYS_OF_WEEK = Pattern.compile("^.*(mon|monday|tue|tues|tuesday|wed|wednesday|thu" +
-                                                                "|thur|thurs|thursday|fri|friday|sat|saturday|sun" +
-                                                                "|sunday).*$");
+            "|thur|thurs|thursday|fri|friday|sat|saturday|sun" +
+            "|sunday).*$");
 
     private static DayOfWeek parseDayOfWeek(String input) {
         Matcher m = DAYS_OF_WEEK.matcher(input);

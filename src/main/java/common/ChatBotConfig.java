@@ -96,7 +96,9 @@ public class ChatBotConfig {
         }
 
         public ChatBotConfig build() {
-            return new ChatBotConfig(this.name, this.logo, this.greeting, this.farewell, this.commenters, this.errorMessages);
+            return new ChatBotConfig(
+                    this.name, this.logo, this.greeting, this.farewell, this.commenters, this.errorMessages
+            );
         }
     }
 }

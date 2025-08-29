@@ -40,7 +40,7 @@ public class Application {
                             `--'  `"                      `--'  `" |____.'   `--'  `"               '------'  '---'\s
                 """;
         ChatBotConfig config = Application.getConfig(logo);
-         bot = new ChatBot(config);
+        bot = new ChatBot(config);
     }
 
     private static ChatBotConfig getConfig(String logo) {
@@ -70,17 +70,17 @@ public class Application {
     }
 
     private void setUpInput() {
-         input.link("list", InputAction.DenumerateTasks, cmd ->  bot.denumerateTasks(null))
-                  .link("find", InputAction.FindTasks,
-                        cmd ->  bot.denumerateTasks(task -> task.getDescription().contains(cmd.nextArg())))
-                  .link("mark", InputAction.MarkTask, cmd ->  bot.markTask(cmd.nextArg(Integer::parseInt)))
-                  .link("unmark", InputAction.UnmarkTask, cmd ->  bot.unmarkTask(cmd.nextArg(Integer::parseInt)))
-                  .link("bye", InputAction.Quit, cmd ->  quit())
-                  .link("todo", InputAction.CreateTodo,  bot::createTask)
-                  .link("deadline", InputAction.CreateDeadline,  bot::createTask)
-                  .link("event", InputAction.CreateEvent,  bot::createTask)
-                  .link("delete", InputAction.DeleteTask, cmd ->  bot.deleteTask(cmd.nextArg(Integer::parseInt)))
-                  .addListener(InputAction.Undefined,  bot::alert);
+        input.link("list", InputAction.DenumerateTasks, cmd -> bot.denumerateTasks(null))
+             .link("find", InputAction.FindTasks,
+                     cmd -> bot.denumerateTasks(task -> task.getDescription().contains(cmd.nextArg())))
+             .link("mark", InputAction.MarkTask, cmd -> bot.markTask(cmd.nextArg(Integer::parseInt)))
+             .link("unmark", InputAction.UnmarkTask, cmd -> bot.unmarkTask(cmd.nextArg(Integer::parseInt)))
+             .link("bye", InputAction.Quit, cmd -> quit())
+             .link("todo", InputAction.CreateTodo, bot::createTask)
+             .link("deadline", InputAction.CreateDeadline, bot::createTask)
+             .link("event", InputAction.CreateEvent, bot::createTask)
+             .link("delete", InputAction.DeleteTask, cmd -> bot.deleteTask(cmd.nextArg(Integer::parseInt)))
+             .addListener(InputAction.Undefined, bot::alert);
     }
 
     public static Application fetchInstance() {
@@ -96,22 +96,22 @@ public class Application {
     }
 
     public void boot() {
-         isRunning = true;
-         bot.showLogo();
-         bot.greetUser();
-        Storage.load( bot);
-         setUpInput();
-         input.run();
+        isRunning = true;
+        bot.showLogo();
+        bot.greetUser();
+        Storage.load(bot);
+        setUpInput();
+        input.run();
     }
 
     public void quit() {
         try {
-             bot.sayGoodbye();
+            bot.sayGoodbye();
         } catch (IOException e) {
-             bot.say("Failed to save data.");
+            bot.say("Failed to save data.");
         }
 
-         isRunning = false;
+        isRunning = false;
         System.exit(0);
     }
 }

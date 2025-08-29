@@ -19,8 +19,9 @@ public class Ui {
 
     /**
      * Registers a callback for a specific user-input command.
+     *
      * @param command the command to link
-     * @param action the action to link to
+     * @param action  the action to link to
      * @return this UI
      */
     public Ui link(String command, InputAction action, Consumer<InputCommand> handler) {
@@ -30,7 +31,8 @@ public class Ui {
 
     /**
      * Adds a listener for a specific input action.
-     * @param action the action to listen to
+     *
+     * @param action   the action to listen to
      * @param listener the listener to add
      * @return this UI
      */
@@ -52,7 +54,8 @@ public class Ui {
 
     /**
      * Removes a listener for a specific input action.
-     * @param action the action to remove the listener from
+     *
+     * @param action   the action to remove the listener from
      * @param listener the listener to remove
      * @return this UI
      */
@@ -66,6 +69,7 @@ public class Ui {
 
     /**
      * Removes all listeners for a specific input action.
+     *
      * @param action the action to remove the listener from
      * @return this UI
      */

@@ -1,5 +1,8 @@
 package comments;
 
+/**
+ * The commenter for removing a task.
+ */
 public class SheogorathRemoveTaskCommenter implements Commenter {
     @Override
     public String commentOn(CommentContext context) {

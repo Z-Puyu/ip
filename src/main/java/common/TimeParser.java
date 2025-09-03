@@ -14,8 +14,29 @@ import java.util.regex.Pattern;
  * A parser that can parse a string into a {@link Temporal}.
  */
 public class TimeParser {
+    private static final Pattern YEAR = Pattern.compile("^.*(\\d{4}).*$");
+    private static final Pattern MM_DD_DASH = Pattern.compile("^.*(1[0-2]|0?[1-9])-([12]\\d|3[01]|0?[1-9]).*$");
+    private static final Pattern DD_MM_SLASH = Pattern.compile("^.*([12]\\d|3[01]|0?[1-9])/(1[0-2]|0?[1-9]).*$");
+    private static final Pattern MM_DD_DOT = Pattern.compile("^.*(1[0-2]|0?[1-9])\\.([12]\\d|3[01]|0?[1-9]).*$");
+    private static final Pattern MMM_DD = Pattern.compile("^.*([A-Za-z]{3,9})\\s+([12]\\d|3[01]|0?[1-9]).*$");
+    private static final Pattern DAYS_OF_WEEK =
+            Pattern.compile("^.*(mon|monday|tue|tues|tuesday|wed|wednesday|thu" + "|thur|thurs|thursday|fri|friday"
+                    + "|sat|saturday|sun" + "|sunday).*$");
+    private static final Pattern TIME_NOON = Pattern.compile("^.*noon.*$");
+    private static final Pattern TIME_MIDNIGHT = Pattern.compile("^.*midnight.*$");
+    private static final Pattern TIME_24_HH_COLON_MM = Pattern.compile("^.*\\s+([0-1]\\d:[0-5]\\d|2[0-3]:[0-5]\\d).*$");
+    private static final Pattern TIME_12_HH_COLON_MM_AP = Pattern.compile("^.*\\s+((?:1[0-2]|0?[1-9]):[0-5])\\d"
+            + "(am|pm|AM|PM).*$");
+
     private TimeParser() { }
 
+    /**
+     * Parses a string into a {@link Temporal}.
+     *
+     * @param input the string to parse
+     * @return the parsed {@link Temporal}
+     * @throws IllegalArgumentException if the string is null or blank
+     */
     public static Temporal parse(String input) {
         if (input == null) {
             throw new IllegalArgumentException("time cannot be null");
@@ -49,12 +70,6 @@ public class TimeParser {
 
         return time == null ? date : LocalDateTime.of(date, time);
     }
-
-    private static final Pattern YEAR = Pattern.compile("^.*(\\d{4}).*$");
-    private static final Pattern MM_DD_DASH = Pattern.compile("^.*(1[0-2]|0?[1-9])-([12]\\d|3[01]|0?[1-9]).*$");
-    private static final Pattern DD_MM_SLASH = Pattern.compile("^.*([12]\\d|3[01]|0?[1-9])/(1[0-2]|0?[1-9]).*$");
-    private static final Pattern MM_DD_DOT = Pattern.compile("^.*(1[0-2]|0?[1-9])\\.([12]\\d|3[01]|0?[1-9]).*$");
-    private static final Pattern MMM_DD = Pattern.compile("^.*([A-Za-z]{3,9})\\s+([12]\\d|3[01]|0?[1-9]).*$");
 
     private static LocalDate parseDate(String input) {
         Matcher m = YEAR.matcher(input);
@@ -95,25 +110,21 @@ public class TimeParser {
 
     private static int monthFromName(String month) {
         return switch (month) {
-            case "jan", "january" -> 1;
-            case "feb", "february" -> 2;
-            case "mar", "march" -> 3;
-            case "apr", "april" -> 4;
-            case "may" -> 5;
-            case "jun", "june" -> 6;
-            case "jul", "july" -> 7;
-            case "aug", "august" -> 8;
-            case "sep", "sept", "september" -> 9;
-            case "oct", "october" -> 10;
-            case "nov", "november" -> 11;
-            case "dec", "december" -> 12;
-            default -> throw new IllegalArgumentException("Unknown month: " + month);
+        case "jan", "january" -> 1;
+        case "feb", "february" -> 2;
+        case "mar", "march" -> 3;
+        case "apr", "april" -> 4;
+        case "may" -> 5;
+        case "jun", "june" -> 6;
+        case "jul", "july" -> 7;
+        case "aug", "august" -> 8;
+        case "sep", "sept", "september" -> 9;
+        case "oct", "october" -> 10;
+        case "nov", "november" -> 11;
+        case "dec", "december" -> 12;
+        default -> throw new IllegalArgumentException("Unknown month: " + month);
         };
     }
-
-    private static final Pattern DAYS_OF_WEEK = Pattern.compile("^.*(mon|monday|tue|tues|tuesday|wed|wednesday|thu" +
-            "|thur|thurs|thursday|fri|friday|sat|saturday|sun" +
-            "|sunday).*$");
 
     private static DayOfWeek parseDayOfWeek(String input) {
         Matcher m = DAYS_OF_WEEK.matcher(input);
@@ -122,21 +133,16 @@ public class TimeParser {
         }
 
         return switch (m.group(1)) {
-            case "mon", "monday" -> DayOfWeek.MONDAY;
-            case "tue", "tues", "tuesday" -> DayOfWeek.TUESDAY;
-            case "wed", "weds", "wednesday" -> DayOfWeek.WEDNESDAY;
-            case "thu", "thur", "thurs", "thursday" -> DayOfWeek.THURSDAY;
-            case "fri", "friday" -> DayOfWeek.FRIDAY;
-            case "sat", "saturday" -> DayOfWeek.SATURDAY;
-            case "sun", "sunday" -> DayOfWeek.SUNDAY;
-            default -> null;
+        case "mon", "monday" -> DayOfWeek.MONDAY;
+        case "tue", "tues", "tuesday" -> DayOfWeek.TUESDAY;
+        case "wed", "weds", "wednesday" -> DayOfWeek.WEDNESDAY;
+        case "thu", "thur", "thurs", "thursday" -> DayOfWeek.THURSDAY;
+        case "fri", "friday" -> DayOfWeek.FRIDAY;
+        case "sat", "saturday" -> DayOfWeek.SATURDAY;
+        case "sun", "sunday" -> DayOfWeek.SUNDAY;
+        default -> null;
         };
     }
-
-    private static final Pattern TIME_NOON = Pattern.compile("^.*noon.*$");
-    private static final Pattern TIME_MIDNIGHT = Pattern.compile("^.*midnight.*$");
-    private static final Pattern TIME_24_HH_COLON_MM = Pattern.compile("^.*\\s+([0-1]\\d:[0-5]\\d|2[0-3]:[0-5]\\d).*$");
-    private static final Pattern TIME_12_HH_COLON_MM_AP = Pattern.compile("^.*\\s+((?:1[0-2]|0?[1-9]):[0-5])\\d(am|pm|AM|PM).*$");
 
     private static LocalTime parseTime(String input) {
         Matcher m = TIME_24_HH_COLON_MM.matcher(input);

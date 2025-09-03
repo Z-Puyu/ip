@@ -2,6 +2,9 @@ package comments;
 
 import reminders.Task;
 
+/**
+ * The commenter for adding a task.
+ */
 public class SheogorathAddTaskCommenter implements Commenter {
     @Override
     public String commentOn(CommentContext context) {

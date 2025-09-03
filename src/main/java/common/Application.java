@@ -1,5 +1,7 @@
 package common;
 
+import java.io.IOException;
+
 import comments.CommentTopic;
 import comments.SheogorathAddTaskCommenter;
 import comments.SheogorathEmptyTaskCommenter;
@@ -14,8 +16,9 @@ import comments.SheogorathUndefinedTimeFrameCommenter;
 import inputs.InputAction;
 import inputs.Ui;
 
-import java.io.IOException;
-
+/**
+ * The main application class.
+ */
 public class Application {
     private static Application instance;
 
@@ -49,8 +52,8 @@ public class Application {
                 You know me. You just don't know it.
                 Sheogorath, Daedric Prince of Madness. At your service.
                 """;
-        String farewell = "Well, I suppose it's back to the Shivering Isles.\n" +
-                "And as for you, my little mortal minion... Feel free to keep the Wabbajack.";
+        String farewell = "Well, I suppose it's back to the Shivering Isles.\n"
+                + "And as for you, my little mortal minion... Feel free to keep the Wabbajack.";
         return new ChatBotConfig.Builder()
                 .withName("Sheogorath")
                 .withLogo(logo)
@@ -83,6 +86,10 @@ public class Application {
              .addListener(InputAction.Undefined, bot::alert);
     }
 
+    /**
+     * Fetch the active instance of the application.
+     * @return the active instance of the application
+     */
     public static Application fetchInstance() {
         if (Application.instance == null) {
             Application.instance = new Application();
@@ -91,10 +98,17 @@ public class Application {
         return Application.instance;
     }
 
+    /**
+     * Check if the application is running.
+     * @return true if the application is running, false otherwise
+     */
     public static boolean isRunning() {
         return Application.instance != null && Application.instance.isRunning;
     }
 
+    /**
+     * Boots the application.
+     */
     public void boot() {
         isRunning = true;
         bot.showLogo();
@@ -104,6 +118,9 @@ public class Application {
         input.run();
     }
 
+    /**
+     * Quits the application.
+     */
     public void quit() {
         try {
             bot.sayGoodbye();

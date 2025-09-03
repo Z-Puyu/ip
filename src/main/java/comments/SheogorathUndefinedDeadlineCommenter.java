@@ -1,5 +1,8 @@
 package comments;
 
+/**
+ * The commenter for undefined deadlines.
+ */
 public class SheogorathUndefinedDeadlineCommenter implements Commenter {
     @Override
     public String commentOn(CommentContext context) {

@@ -1,5 +1,8 @@
 package comments;
 
+/**
+ * The topic of a comment.
+ */
 public enum CommentTopic {
     AddTask,
     InvalidTask,

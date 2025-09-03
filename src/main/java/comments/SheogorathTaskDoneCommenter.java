@@ -2,6 +2,9 @@ package comments;
 
 import reminders.Task;
 
+/**
+ * The commenter for when a task is marked as done.
+ */
 public class SheogorathTaskDoneCommenter implements Commenter {
     @Override
     public String commentOn(CommentContext context) {

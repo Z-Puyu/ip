@@ -1,5 +1,8 @@
 package comments;
 
+/**
+ * The commenter for undefined time frames.
+ */
 public class SheogorathUndefinedTimeFrameCommenter implements Commenter {
     @Override
     public String commentOn(CommentContext context) {

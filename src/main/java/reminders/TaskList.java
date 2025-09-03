@@ -52,6 +52,12 @@ public class TaskList implements Iterable<Task> {
         return tasks.remove(index);
     }
 
+    /**
+     * Returns a list of tasks that match the given predicate.
+     *
+     * @param predicate the predicate
+     * @return the list of tasks
+     */
     public List<Task> where(Predicate<Task> predicate) {
         if (predicate == null) {
             return this.tasks;

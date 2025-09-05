@@ -1,4 +1,4 @@
-﻿package gui;
+package gui;
 
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;

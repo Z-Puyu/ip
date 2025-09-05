@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.function.Consumer;
 
-import common.Application;
+import common.App;
 
 /**
  * A UI that can interpret user input.
@@ -103,7 +103,7 @@ public class Ui {
      */
     public void run() {
         Scanner sc = new Scanner(System.in);
-        while (Application.isRunning()) {
+        while (App.isRunning()) {
             handle(sc.nextLine());
         }
     }

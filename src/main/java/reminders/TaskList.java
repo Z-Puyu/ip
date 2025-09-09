@@ -38,6 +38,15 @@ public class TaskList implements Iterable<Task> {
     }
 
     /**
+     * Checks if the list contains a task.
+     * @param task the task
+     * @return true if the list contains the task, false otherwise
+     */
+    public boolean contains(Task task) {
+        return tasks.containsValue(task);
+    }
+
+    /**
      * Gets a task from the list.
      *
      * @param index the index of the task

@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import comments.CommentTopic;
 import comments.SheogorathAddTaskCommenter;
+import comments.SheogorathDuplicateTaskCommenter;
 import comments.SheogorathEmptyTaskCommenter;
 import comments.SheogorathInvalidTaskCommenter;
 import comments.SheogorathListTasksCommenter;
@@ -69,6 +70,7 @@ public class App extends Application {
                 .withCommenter(CommentTopic.InvalidTask, new SheogorathInvalidTaskCommenter())
                 .withCommenter(CommentTopic.UndefinedCommand, new SheogorathUndefinedCommandCommenter())
                 .withCommenter(CommentTopic.AddTask, new SheogorathAddTaskCommenter())
+                .withCommenter(CommentTopic.DuplicateTask, new SheogorathDuplicateTaskCommenter())
                 .withCommenter(CommentTopic.ListingTask, new SheogorathListTasksCommenter())
                 .withCommenter(CommentTopic.TaskIsDone, new SheogorathTaskDoneCommenter())
                 .withCommenter(CommentTopic.TaskIsReset, new SheogorathTaskResetCommenter())
@@ -116,9 +118,9 @@ public class App extends Application {
      * Boots the application.
      */
     @Override
-    public void start(Stage stage) {
+    public void start(Stage primaryStage) {
         isRunning = true;
-        input.start(stage);
+        input.start(primaryStage);
         setUpInput();
         bot.showLogo();
         bot.greetUser();

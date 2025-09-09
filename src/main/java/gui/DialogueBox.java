@@ -16,7 +16,7 @@ import javafx.scene.layout.HBox;
  */
 public class DialogueBox extends HBox {
     private static final String DIALOGUE_BOX_FXML_PATH = "/view/DialogueBox.fxml";
-    private static final Image USER_IMG = new Image(ResourceLoader.loadAsStream("/images/DaUser.png"));
+    private static final Image USER_IMG = new Image(ResourceLoader.loadAsStream("/images/DaUser.jpg"));
     private static final Image BOT_IMG = new Image(ResourceLoader.loadAsStream("/images/DaDuke.png"));
 
     @FXML

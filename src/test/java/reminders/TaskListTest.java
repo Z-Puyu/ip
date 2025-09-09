@@ -27,12 +27,15 @@ public class TaskListTest {
 
         Task t1 = makeTodo("a");
         Task t2 = makeTodo("b");
-        Assertions.assertTrue(list.add(t1));
-        Assertions.assertTrue(list.add(t2));
+        list.add(t1);
+        list.add(t2);
         Assertions.assertEquals(2, list.size());
 
         Assertions.assertSame(t1, list.get(0));
         Assertions.assertSame(t2, list.get(1));
+
+        Task t3 = makeTodo("a");
+        Assertions.assertTrue(list.contains(t3));
     }
 
     @Test

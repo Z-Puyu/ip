@@ -90,10 +90,14 @@ public final class ChatBot {
      * Adds a task to the list.
      *
      * @param task the task
-     * @return true if the task was added, false otherwise
      */
-    public boolean addTask(Task task) {
-        return taskList.add(task);
+    public void addTask(Task task) {
+        if (taskList.contains(task)) {
+            say(config.fetchComment(CommentTopic.DuplicateTask, CommentContext.ofTask(task, -1)));
+        } else {
+            taskList.add(task);
+            say(config.fetchComment(CommentTopic.AddTask, CommentContext.ofTaskList(taskList, task, taskList.size())));
+        }
     }
 
     /**
@@ -104,10 +108,7 @@ public final class ChatBot {
     public void createTask(InputCommand command) {
         try {
             Task task = Task.from(command);
-            if (addTask(task)) {
-                int size = taskList.size();
-                say(config.fetchComment(CommentTopic.AddTask, CommentContext.ofTaskList(taskList, task, size)));
-            }
+            addTask(task);
         } catch (EmptyTaskException e) {
             say(config.fetchComment(CommentTopic.TaskWithoutDescription, CommentContext.ofTask(null, -1)));
         } catch (UndefinedDeadlineException e) {

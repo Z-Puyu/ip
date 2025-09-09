@@ -8,6 +8,7 @@ public enum CommentTopic {
     InvalidTask,
     ListingTask,
     RemoveTask,
+    DuplicateTask,
     TaskIsDone,
     TaskIsReset,
     UndefinedCommand,

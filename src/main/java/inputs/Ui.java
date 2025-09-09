@@ -111,6 +111,7 @@ public class Ui {
      * Runs the UI. This means that it will listen for user input and call the registered listeners.
      */
     public void run() {
+        assert App.isRunning();
         Scanner sc = new Scanner(System.in);
         while (App.isRunning()) {
             handle(sc.nextLine());
@@ -123,6 +124,7 @@ public class Ui {
      * @param stage the stage to use
      */
     public void start(Stage stage) {
+        assert stage != null && App.isRunning();
         ResourceLoader.FxmlResource<AnchorPane> resource = ResourceLoader.loadFxml(MAIN_FXML_PATH);
         stage.setScene(new Scene(resource.node()));
         mainWindow = resource.loader().getController();

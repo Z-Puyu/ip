@@ -38,6 +38,7 @@ public final class ChatBot {
      * @param text the message
      */
     public void say(String text) {
+        assert onOutput != null;
         onOutput.accept(text.trim());
         System.out.println(ChatBot.SEPARATOR + '\n' + text.trim() + '\n' + ChatBot.SEPARATOR);
     }
@@ -127,6 +128,7 @@ public final class ChatBot {
      * Prints the greeting to the console.
      */
     public void greetUser() {
+        assert onOutput != null;
         onOutput.accept(config.getGreeting());
         System.out.println(config.getGreeting() + ChatBot.SEPARATOR);
     }
@@ -136,6 +138,7 @@ public final class ChatBot {
      */
     public void sayGoodbye() throws IOException {
         Storage.save(taskList);
+        assert onOutput != null;
         onOutput.accept(config.getFarewell());
         System.out.println(ChatBot.SEPARATOR + '\n' + config.getFarewell());
     }

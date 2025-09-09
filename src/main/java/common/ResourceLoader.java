@@ -57,7 +57,6 @@ public class ResourceLoader {
      * @param controller the controller for the FXML file
      * @param root the root for the FXML file
      * @param <T> the type of the JavaFX node
-     * @return the loaded JavaFX node
      */
     public static <T extends Node> void loadFxml(String path, T controller, T root) {
         try {

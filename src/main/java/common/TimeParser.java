@@ -72,36 +72,36 @@ public class TimeParser {
     }
 
     private static LocalDate parseDate(String input) {
-        Matcher m = YEAR.matcher(input);
-        int year = m.matches() ? Integer.parseInt(m.group(1)) : LocalDate.now().getYear();
+        Matcher matcher = YEAR.matcher(input);
+        int year = matcher.matches() ? Integer.parseInt(matcher.group(1)) : LocalDate.now().getYear();
         int month;
         int day;
 
-        m = MM_DD_DASH.matcher(input);
-        if (m.matches()) {
-            month = Integer.parseInt(m.group(1));
-            day = Integer.parseInt(m.group(2));
+        matcher = MM_DD_DASH.matcher(input);
+        if (matcher.matches()) {
+            month = Integer.parseInt(matcher.group(1));
+            day = Integer.parseInt(matcher.group(2));
             return LocalDate.of(year, month, day);
         }
 
-        m = DD_MM_SLASH.matcher(input);
-        if (m.matches()) {
-            day = Integer.parseInt(m.group(1));
-            month = Integer.parseInt(m.group(2));
+        matcher = DD_MM_SLASH.matcher(input);
+        if (matcher.matches()) {
+            day = Integer.parseInt(matcher.group(1));
+            month = Integer.parseInt(matcher.group(2));
             return LocalDate.of(year, month, day);
         }
 
-        m = MM_DD_DOT.matcher(input);
-        if (m.matches()) {
-            month = Integer.parseInt(m.group(1));
-            day = Integer.parseInt(m.group(2));
+        matcher = MM_DD_DOT.matcher(input);
+        if (matcher.matches()) {
+            month = Integer.parseInt(matcher.group(1));
+            day = Integer.parseInt(matcher.group(2));
             return LocalDate.of(year, month, day);
         }
 
-        m = MMM_DD.matcher(input);
-        if (m.matches()) {
-            month = TimeParser.monthFromName(m.group(1).toLowerCase(Locale.ENGLISH));
-            day = Integer.parseInt(m.group(2));
+        matcher = MMM_DD.matcher(input);
+        if (matcher.matches()) {
+            month = TimeParser.monthFromName(matcher.group(1).toLowerCase(Locale.ENGLISH));
+            day = Integer.parseInt(matcher.group(2));
             return LocalDate.of(year, month, day);
         }
 
@@ -127,12 +127,12 @@ public class TimeParser {
     }
 
     private static DayOfWeek parseDayOfWeek(String input) {
-        Matcher m = DAYS_OF_WEEK.matcher(input);
-        if (!m.matches()) {
+        Matcher matcher = DAYS_OF_WEEK.matcher(input);
+        if (!matcher.matches()) {
             return null;
         }
 
-        return switch (m.group(1)) {
+        return switch (matcher.group(1)) {
         case "mon", "monday" -> DayOfWeek.MONDAY;
         case "tue", "tues", "tuesday" -> DayOfWeek.TUESDAY;
         case "wed", "weds", "wednesday" -> DayOfWeek.WEDNESDAY;
@@ -145,22 +145,22 @@ public class TimeParser {
     }
 
     private static LocalTime parseTime(String input) {
-        Matcher m = TIME_24_HH_COLON_MM.matcher(input);
-        if (m.matches()) {
-            String numeric = m.group(1);
+        Matcher matcher = TIME_24_HH_COLON_MM.matcher(input);
+        if (matcher.matches()) {
+            String numeric = matcher.group(1);
             int colon = numeric.indexOf(':');
             int hour = Integer.parseInt(numeric.substring(0, colon));
             int minute = Integer.parseInt(numeric.substring(colon + 1));
             return LocalTime.of(hour, minute);
         }
 
-        m = TIME_12_HH_COLON_MM_AP.matcher(input);
-        if (m.matches()) {
-            String numeric = m.group(1);
+        matcher = TIME_12_HH_COLON_MM_AP.matcher(input);
+        if (matcher.matches()) {
+            String numeric = matcher.group(1);
             int colon = numeric.indexOf(':');
             int hour12 = Integer.parseInt(numeric.substring(0, colon));
             int minute = Integer.parseInt(numeric.substring(colon + 1));
-            int hour = hour12 % 12 + (m.group(2).equals("pm") ? 12 : 0);
+            int hour = hour12 % 12 + (matcher.group(2).equals("pm") ? 12 : 0);
             return LocalTime.of(hour, minute);
         }
 

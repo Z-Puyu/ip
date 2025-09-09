@@ -15,19 +15,20 @@ import comments.SheogorathUndefinedDeadlineCommenter;
 import comments.SheogorathUndefinedTimeFrameCommenter;
 import inputs.InputAction;
 import inputs.Ui;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 /**
  * The main application class.
  */
-public class Application {
-    private static Application instance;
-
-    private boolean isRunning;
-    private final ChatBot bot;
-    private final Ui input = new Ui();
-
-    private Application() {
-        String logo = """
+public class App extends Application {
+    private static final String LOGO = """
                                                                        .---.                _..._                  \s
                                                                        |   |             .-'_..._''.               \s
                                      /|        /|                      '---'           .' .'      '.\\    .         \s
@@ -42,11 +43,21 @@ public class Application {
                            \\ \\._,\\ '/'  `'-'`  '  `'-'`  \\ \\._,\\ '/|      ' \\ \\._,\\ '/            `  '    \\  \\  \\  \s
                             `--'  `"                      `--'  `" |____.'   `--'  `"               '------'  '---'\s
                 """;
-        ChatBotConfig config = Application.getConfig(logo);
-        bot = new ChatBot(config);
+    private static App instance;
+
+    private boolean isRunning;
+    private final ChatBot bot;
+    private final Ui input = new Ui();
+
+    /**
+     * Creates the application.
+     */
+    public App() {
+        ChatBotConfig config = App.getConfig();
+        bot = new ChatBot(config, input::present);
     }
 
-    private static ChatBotConfig getConfig(String logo) {
+    private static ChatBotConfig getConfig() {
         String greeting = """
                 Hey, you! Finally awake!
                 You know me. You just don't know it.
@@ -56,7 +67,7 @@ public class Application {
                 + "And as for you, my little mortal minion... Feel free to keep the Wabbajack.";
         return new ChatBotConfig.Builder()
                 .withName("Sheogorath")
-                .withLogo(logo)
+                .withLogo(App.LOGO)
                 .withGreeting(greeting)
                 .withFarewell(farewell)
                 .withCommenter(CommentTopic.RemoveTask, new SheogorathRemoveTaskCommenter())
@@ -90,12 +101,12 @@ public class Application {
      * Fetch the active instance of the application.
      * @return the active instance of the application
      */
-    public static Application fetchInstance() {
-        if (Application.instance == null) {
-            Application.instance = new Application();
+    public static App fetchInstance() {
+        if (App.instance == null) {
+            App.instance = new App();
         }
 
-        return Application.instance;
+        return App.instance;
     }
 
     /**
@@ -103,19 +114,21 @@ public class Application {
      * @return true if the application is running, false otherwise
      */
     public static boolean isRunning() {
-        return Application.instance != null && Application.instance.isRunning;
+        return App.instance != null && App.instance.isRunning;
     }
 
     /**
      * Boots the application.
      */
-    public void boot() {
+    @Override
+    public void start(Stage stage) {
         isRunning = true;
-        bot.showLogo();
-        bot.greetUser();
-        Storage.load(bot);
+        input.start(stage);
         setUpInput();
-        input.run();
+        // bot.showLogo();
+        bot.greetUser();
+        //Storage.load(bot);
+        // input.run();
     }
 
     /**

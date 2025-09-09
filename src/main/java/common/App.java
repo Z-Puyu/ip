@@ -16,12 +16,7 @@ import comments.SheogorathUndefinedTimeFrameCommenter;
 import inputs.InputAction;
 import inputs.Ui;
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 
 /**
@@ -139,9 +134,18 @@ public class App extends Application {
             bot.sayGoodbye();
         } catch (IOException e) {
             bot.say("Failed to save data.");
+            System.exit(1);
         }
 
         isRunning = false;
-        System.exit(0);
+        Platform.runLater(() -> {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            System.exit(0);
+        });
     }
 }

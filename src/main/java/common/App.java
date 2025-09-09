@@ -125,10 +125,10 @@ public class App extends Application {
         isRunning = true;
         input.start(stage);
         setUpInput();
-        // bot.showLogo();
+        bot.showLogo();
         bot.greetUser();
-        //Storage.load(bot);
-        // input.run();
+        Storage.load(bot);
+        input.run();
     }
 
     /**

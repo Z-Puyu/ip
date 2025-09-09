@@ -43,7 +43,7 @@ public class TimeParser {
         }
 
         input = input.trim().toLowerCase(Locale.ENGLISH);
-        if (input.isEmpty()) {
+        if (input.isBlank()) {
             throw new IllegalArgumentException("time cannot be blank");
         }
 

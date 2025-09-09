@@ -4,6 +4,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.Temporal;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Locale;
@@ -29,6 +30,27 @@ public class TimeParser {
             + "(am|pm|AM|PM).*$");
 
     private TimeParser() { }
+
+    /**
+     * Formats a {@link Temporal} into a string.
+     *
+     * @param temporal the temporal to format
+     * @param dateTimeFormat the format to use for {@link LocalDateTime}
+     * @param dateFormat the format to use for {@link LocalDate}
+     * @return the formatted string
+     */
+    public static String format(Temporal temporal, DateTimeFormatter dateTimeFormat, DateTimeFormatter dateFormat) {
+        String res = temporal.toString();
+        if (temporal instanceof LocalDateTime dt) {
+            res = dt.toLocalDate().equals(LocalDate.now())
+                    ? "today " + dt.toLocalTime()
+                    : dt.format(dateTimeFormat);
+        } else if (temporal instanceof LocalDate d) {
+            res = d.equals(LocalDate.now()) ? "today" : d.format(dateFormat);
+        }
+
+        return res;
+    }
 
     /**
      * Parses a string into a {@link Temporal}.

@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.Temporal;
+import java.util.Objects;
 
 import common.TimeParser;
 import inputs.InputCommand;
@@ -99,6 +100,16 @@ public abstract class Task implements Serializable {
         return String.format("[%c] %s", isDone ? 'X' : ' ', description);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Task t && t.description.equals(description);
+    }
+
+    @Override
+    public int hashCode() {
+        return description.hashCode();
+    }
+
     private static class ToDo extends Task {
         public ToDo(String description) {
             super(description);
@@ -111,7 +122,7 @@ public abstract class Task implements Serializable {
     }
 
     private static class Deadline extends Task {
-        private Temporal date;
+        private final Temporal date;
 
         public Deadline(String description, String date) {
             super(description);
@@ -131,11 +142,21 @@ public abstract class Task implements Serializable {
 
             return String.format("[D][%c] %s (by: %s)", isDone() ? 'X' : ' ', getDescription(), date);
         }
+
+        @Override
+        public boolean equals(Object obj) {
+            return super.equals(obj) && obj instanceof Deadline ddl && date.equals(ddl.date);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(this.getDescription(), this.date);
+        }
     }
 
     private static class Event extends Task {
-        private Temporal startTime;
-        private Temporal endTime;
+        private final Temporal startTime;
+        private final Temporal endTime;
 
         public Event(String description, String startTime, String endTime) {
             super(description);
@@ -145,28 +166,21 @@ public abstract class Task implements Serializable {
 
         @Override
         public String toString() {
-            String start = startTime.toString();
-            if (startTime instanceof LocalDateTime s) {
-                start = s.toLocalDate().equals(LocalDate.now())
-                        ? "today " + s.toLocalTime()
-                        : s.format(DATE_TIME_FORMAT);
-            } else if (startTime instanceof LocalDate d) {
-                start = d.equals(LocalDate.now()) ? "today" : d.format(DATE_FORMAT);
-            }
-
-            String end = endTime.toString();
-            if (endTime instanceof LocalDateTime e) {
-                end = e.toLocalDate().equals(LocalDate.now())
-                        ? "today " + e.toLocalTime()
-                        : e.format(DATE_TIME_FORMAT);
-            } else if (endTime instanceof LocalDate e) {
-                end = e.equals(LocalDate.now()) ? "today" : e.format(DATE_FORMAT);
-            }
-
+            String start = TimeParser.format(startTime, DATE_TIME_FORMAT, DATE_FORMAT);
+            String end = TimeParser.format(endTime, DATE_TIME_FORMAT, DATE_FORMAT);
             return String.format("[E][%c] %s (from: %s to: %s)", isDone() ? 'X' : ' ', getDescription(),
                     start, end);
         }
+
+        @Override
+        public boolean equals(Object obj) {
+            return super.equals(obj) && obj instanceof Event e
+                    && startTime.equals(e.startTime) && endTime.equals(e.endTime);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(this.getDescription(), this.startTime, this.endTime);
+        }
     }
-
-
 }

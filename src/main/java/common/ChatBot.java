@@ -20,8 +20,13 @@ public final class ChatBot {
     private static final String SEPARATOR = new String(new char[50]).replace('\0', '-');
     private final ChatBotConfig config;
     private final TaskList taskList = new TaskList();
-    private Consumer<String> onOutput = System.out::println;
+    private final Consumer<String> onOutput;
 
+    /**
+     * Creates a chatbot.
+     * @param config the chatbot config
+     * @param onOutput the output consumer
+     */
     public ChatBot(ChatBotConfig config, Consumer<String> onOutput) {
         this.config = config;
         this.onOutput = onOutput;
@@ -34,7 +39,7 @@ public final class ChatBot {
      */
     public void say(String text) {
         onOutput.accept(text.trim());
-        // System.out.println(ChatBot.SEPARATOR + '\n' + text.trim() + '\n' + ChatBot.SEPARATOR);
+        System.out.println(ChatBot.SEPARATOR + '\n' + text.trim() + '\n' + ChatBot.SEPARATOR);
     }
 
     /**

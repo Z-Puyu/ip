@@ -2,7 +2,6 @@ package gui;
 
 import java.util.function.Consumer;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -24,8 +23,16 @@ public class MainWindow extends AnchorPane {
     private Button sendButton;
     private Consumer<String> onInput;
 
+    /**
+     * Append an input handler.
+     * @param onInput the input handler
+     */
     public void onInput(Consumer<String> onInput) {
-        this.onInput = onInput;
+        if (this.onInput == null) {
+            this.onInput = onInput;
+        } else {
+            this.onInput = this.onInput.andThen(onInput);
+        }
     }
 
     @FXML

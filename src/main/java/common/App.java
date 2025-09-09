@@ -18,7 +18,6 @@ import inputs.Ui;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -55,7 +54,7 @@ public class App extends Application {
      */
     public App() {
         ChatBotConfig config = App.getConfig();
-        bot = new ChatBot(config);
+        bot = new ChatBot(config, input::present);
     }
 
     private static ChatBotConfig getConfig() {
@@ -124,25 +123,12 @@ public class App extends Application {
     @Override
     public void start(Stage stage) {
         isRunning = true;
-        ScrollPane scrollPane = new ScrollPane();
-        VBox dialogContainer = new VBox();
-        scrollPane.setContent(dialogContainer);
-
-        TextField userInput = new TextField();
-        Button sendButton = new Button("Send");
-
-        AnchorPane mainLayout = new AnchorPane();
-        mainLayout.getChildren().addAll(scrollPane, userInput, sendButton);
-
-        Scene scene = new Scene(mainLayout);
-
-        stage.setScene(scene);
-        stage.show();
-        /*bot.showLogo();
-        bot.greetUser();
-        Storage.load(bot);
+        input.start(stage);
         setUpInput();
-        input.run();*/
+        // bot.showLogo();
+        bot.greetUser();
+        //Storage.load(bot);
+        // input.run();
     }
 
     /**

@@ -1,6 +1,7 @@
 package common;
 
 import java.io.IOException;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import comments.CommentContext;
@@ -19,9 +20,11 @@ public final class ChatBot {
     private static final String SEPARATOR = new String(new char[50]).replace('\0', '-');
     private final ChatBotConfig config;
     private final TaskList taskList = new TaskList();
+    private Consumer<String> onOutput = System.out::println;
 
-    public ChatBot(ChatBotConfig config) {
+    public ChatBot(ChatBotConfig config, Consumer<String> onOutput) {
         this.config = config;
+        this.onOutput = onOutput;
     }
 
     /**
@@ -30,7 +33,8 @@ public final class ChatBot {
      * @param text the message
      */
     public void say(String text) {
-        System.out.println(ChatBot.SEPARATOR + '\n' + text.trim() + '\n' + ChatBot.SEPARATOR);
+        onOutput.accept(text.trim());
+        // System.out.println(ChatBot.SEPARATOR + '\n' + text.trim() + '\n' + ChatBot.SEPARATOR);
     }
 
     /**
@@ -118,6 +122,7 @@ public final class ChatBot {
      * Prints the greeting to the console.
      */
     public void greetUser() {
+        onOutput.accept(config.getGreeting());
         System.out.println(config.getGreeting() + ChatBot.SEPARATOR);
     }
 
@@ -126,6 +131,7 @@ public final class ChatBot {
      */
     public void sayGoodbye() throws IOException {
         Storage.save(taskList);
+        onOutput.accept(config.getFarewell());
         System.out.println(ChatBot.SEPARATOR + '\n' + config.getFarewell());
     }
 

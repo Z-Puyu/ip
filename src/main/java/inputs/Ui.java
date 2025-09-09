@@ -1,5 +1,6 @@
 package inputs;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -9,11 +10,19 @@ import java.util.StringTokenizer;
 import java.util.function.Consumer;
 
 import common.App;
+import common.ResourceLoader;
+import gui.MainWindow;
+import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 /**
  * A UI that can interpret user input.
  */
 public class Ui {
+    private static final String MAIN_FXML_PATH = "/view/MainWindow.fxml";
+
+    private MainWindow mainWindow;
     private final Parser parser = new Parser();
     private final Map<InputAction, Set<Consumer<InputCommand>>> listeners = new HashMap<>();
 
@@ -106,6 +115,23 @@ public class Ui {
         while (App.isRunning()) {
             handle(sc.nextLine());
         }
+    }
+
+    /**
+     * Starts the UI.
+     *
+     * @param stage the stage to use
+     */
+    public void start(Stage stage) {
+        ResourceLoader.FxmlResource<AnchorPane> resource = ResourceLoader.loadFxml(MAIN_FXML_PATH);
+        stage.setScene(new Scene(resource.node()));
+        mainWindow = resource.loader().getController();
+        mainWindow.onInput(this::handle);
+        stage.show();
+    }
+
+    public void present(String text) {
+        mainWindow.present(text);
     }
 }
 

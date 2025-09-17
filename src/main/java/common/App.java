@@ -82,8 +82,7 @@ public class App extends Application {
 
     private void setUpInput() {
         input.link("list", InputAction.DenumerateTasks, cmd -> bot.denumerateTasks(null))
-             .link("find", InputAction.FindTasks,
-                     cmd -> bot.denumerateTasks(task -> task.getDescription().contains(cmd.nextArg())))
+             .link("find", InputAction.FindTasks, cmd -> bot.findTasks(cmd.nextArg()))
              .link("mark", InputAction.MarkTask, cmd -> bot.markTask(cmd.nextArg(Integer::parseInt)))
              .link("unmark", InputAction.UnmarkTask, cmd -> bot.unmarkTask(cmd.nextArg(Integer::parseInt)))
              .link("bye", InputAction.Quit, cmd -> quit())

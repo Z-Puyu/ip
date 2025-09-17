@@ -86,6 +86,15 @@ public final class ChatBot {
     }
 
     /**
+     * Lists all tasks with a keyword in their descriptions.
+     *
+     * @param keyword the keyword to search for
+     */
+    public void findTasks(String keyword) {
+        this.denumerateTasks(task -> task.getDescription().contains(keyword));
+    }
+
+    /**
      * Reloads a task into the list.
      *
      * @param task the task to reload

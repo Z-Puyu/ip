@@ -12,7 +12,8 @@ import javafx.scene.Node;
  */
 public class ResourceLoader {
     /**
-     * A record for holding a JavaFX node and its FXMLLoader.
+     * A record class for a JavaFX node and its FXMLLoader.
+     * @param <T> the type of the JavaFX node
      */
     public record FxmlResource<T extends Node>(T node, FXMLLoader loader) { }
 

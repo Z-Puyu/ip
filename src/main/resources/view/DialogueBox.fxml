@@ -4,17 +4,19 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.shape.Circle?>
 
-<fx:root alignment="TOP_RIGHT"
-         maxHeight="1.7976931348623157E308"
-         maxWidth="1.7976931348623157E308"
-         prefWidth="400.0"
-         type="javafx.scene.layout.HBox"
-         xmlns="http://javafx.com/javafx/17"
-         xmlns:fx="http://javafx.com/fxml/1">
+<fx:root alignment="TOP_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="400.0" stylesheets="@../css/dialogue-box.css" type="javafx.scene.layout.HBox" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <padding>
-        <Insets bottom="15.0" left="5.0" right="5.0" top="15.0"/>
+        <Insets bottom="15.0" left="5.0" right="5.0" top="15.0" />
     </padding>
-    <Label fx:id="text" text="Label" wrapText="true" minHeight="-Infinity"/>
-    <ImageView fx:id="image" fitHeight="99.0" fitWidth="99.0" pickOnBounds="true" preserveRatio="true"/>
+    <Label fx:id="text" minHeight="-Infinity" text="Test a very very long text \n with two lines">
+      <HBox.margin>
+         <Insets />
+      </HBox.margin></Label>
+    <ImageView fx:id="image" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+        <clip>
+            <Circle centerX="50" centerY="50" radius="45" />
+        </clip>
+    </ImageView>
 </fx:root>

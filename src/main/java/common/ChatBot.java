@@ -20,14 +20,14 @@ public final class ChatBot {
     private static final String SEPARATOR = new String(new char[50]).replace('\0', '-');
     private final ChatBotConfig config;
     private final TaskList taskList = new TaskList();
-    private final Consumer<String> onOutput;
+    private final Consumer<ChatBotOutput> onOutput;
 
     /**
      * Creates a chatbot.
      * @param config the chatbot config
      * @param onOutput the output consumer
      */
-    public ChatBot(ChatBotConfig config, Consumer<String> onOutput) {
+    public ChatBot(ChatBotConfig config, Consumer<ChatBotOutput> onOutput) {
         this.config = config;
         this.onOutput = onOutput;
     }
@@ -36,10 +36,11 @@ public final class ChatBot {
      * Prints a message to the console.
      *
      * @param text the message
+     * @param isWarning whether the message is a warning
      */
-    public void say(String text) {
+    public void say(String text, boolean isWarning) {
         assert onOutput != null;
-        onOutput.accept(text.trim());
+        onOutput.accept(new ChatBotOutput(text, isWarning));
         System.out.println(ChatBot.SEPARATOR + '\n' + text.trim() + '\n' + ChatBot.SEPARATOR);
     }
 
@@ -50,11 +51,11 @@ public final class ChatBot {
      */
     public void markTask(int index) {
         if (index < 1 || index > taskList.size()) {
-            say(config.fetchComment(CommentTopic.InvalidTask, CommentContext.ofTask(null, -1)));
+            say(config.fetchComment(CommentTopic.InvalidTask, CommentContext.ofTask(null, -1)), true);
         } else {
             Task task = taskList.get(index - 1);
             task.complete();
-            say(config.fetchComment(CommentTopic.TaskIsDone, CommentContext.ofTask(task, index)));
+            say(config.fetchComment(CommentTopic.TaskIsDone, CommentContext.ofTask(task, index)), false);
         }
     }
 
@@ -65,11 +66,11 @@ public final class ChatBot {
      */
     public void unmarkTask(int index) {
         if (index < 1 || index > taskList.size()) {
-            say(config.fetchComment(CommentTopic.InvalidTask, CommentContext.ofTask(null, -1)));
+            say(config.fetchComment(CommentTopic.InvalidTask, CommentContext.ofTask(null, -1)), true);
         } else {
             Task task = taskList.get(index - 1);
             task.reset();
-            say(config.fetchComment(CommentTopic.TaskIsReset, CommentContext.ofTask(task, index)));
+            say(config.fetchComment(CommentTopic.TaskIsReset, CommentContext.ofTask(task, index)), false);
         }
     }
 
@@ -83,7 +84,7 @@ public final class ChatBot {
         // TODO: What to say if there are no tasks?
 
         this.say(config.fetchComment(CommentTopic.ListingTask,
-                CommentContext.ofTaskList(taskList.where(predicate), null, taskList.size())));
+                CommentContext.ofTaskList(taskList.where(predicate), null, taskList.size())), false);
     }
 
     /**
@@ -93,10 +94,11 @@ public final class ChatBot {
      */
     public void addTask(Task task) {
         if (taskList.contains(task)) {
-            say(config.fetchComment(CommentTopic.DuplicateTask, CommentContext.ofTask(task, -1)));
+            say(config.fetchComment(CommentTopic.DuplicateTask, CommentContext.ofTask(task, -1)), true);
         } else {
             taskList.add(task);
-            say(config.fetchComment(CommentTopic.AddTask, CommentContext.ofTaskList(taskList, task, taskList.size())));
+            say(config.fetchComment(CommentTopic.AddTask,
+                    CommentContext.ofTaskList(taskList, task, taskList.size())), false);
         }
     }
 
@@ -110,11 +112,11 @@ public final class ChatBot {
             Task task = Task.from(command);
             addTask(task);
         } catch (EmptyTaskException e) {
-            say(config.fetchComment(CommentTopic.TaskWithoutDescription, CommentContext.ofTask(null, -1)));
+            say(config.fetchComment(CommentTopic.TaskWithoutDescription, CommentContext.ofTask(null, -1)), true);
         } catch (UndefinedDeadlineException e) {
-            say(config.fetchComment(CommentTopic.UndefinedDeadline, CommentContext.ofTask(null, -1)));
+            say(config.fetchComment(CommentTopic.UndefinedDeadline, CommentContext.ofTask(null, -1)), true);
         } catch (UndefinedTimeFrameException e) {
-            say(config.fetchComment(CommentTopic.UndefinedEventTime, CommentContext.ofTask(null, -1)));
+            say(config.fetchComment(CommentTopic.UndefinedEventTime, CommentContext.ofTask(null, -1)), true);
         }
     }
 
@@ -130,7 +132,7 @@ public final class ChatBot {
      */
     public void greetUser() {
         assert onOutput != null;
-        onOutput.accept(config.getGreeting());
+        onOutput.accept(new ChatBotOutput(config.getGreeting(), false));
         System.out.println(config.getGreeting() + ChatBot.SEPARATOR);
     }
 
@@ -140,7 +142,7 @@ public final class ChatBot {
     public void sayGoodbye() throws IOException {
         Storage.save(taskList);
         assert onOutput != null;
-        onOutput.accept(config.getFarewell());
+        onOutput.accept(new ChatBotOutput(config.getFarewell(), false));
         System.out.println(ChatBot.SEPARATOR + '\n' + config.getFarewell());
     }
 
@@ -150,7 +152,7 @@ public final class ChatBot {
      * @param command the input command
      */
     public void alert(InputCommand command) {
-        say(config.fetchComment(CommentTopic.UndefinedCommand, CommentContext.ofCommand(command)));
+        say(config.fetchComment(CommentTopic.UndefinedCommand, CommentContext.ofCommand(command)), true);
     }
 
     @Override
@@ -166,9 +168,9 @@ public final class ChatBot {
     public void deleteTask(int index) {
         Task removed = taskList.removeAt(index);
         if (removed == null) {
-            say(config.fetchComment(CommentTopic.InvalidTask, CommentContext.ofTask(null, index)));
+            say(config.fetchComment(CommentTopic.InvalidTask, CommentContext.ofTask(null, index)), true);
         } else {
-            say(config.fetchComment(CommentTopic.RemoveTask, CommentContext.ofTask(removed, index)));
+            say(config.fetchComment(CommentTopic.RemoveTask, CommentContext.ofTask(removed, index)), false);
         }
     }
 }

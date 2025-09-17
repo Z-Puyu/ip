@@ -95,7 +95,7 @@ public class App extends Application {
     }
 
     /**
-     * Fetch the active instance of the application.
+     * Fetches the active instance of the application.
      * @return the active instance of the application
      */
     public static App fetchInstance() {
@@ -107,7 +107,7 @@ public class App extends Application {
     }
 
     /**
-     * Check if the application is running.
+     * Checks if the application is running.
      * @return true if the application is running, false otherwise
      */
     public static boolean isRunning() {

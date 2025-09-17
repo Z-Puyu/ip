@@ -81,10 +81,19 @@ public final class ChatBot {
      * @param predicate a filtering condition for tasks
      */
     public void denumerateTasks(Predicate<Task> predicate) {
-        // TODO: What to say if there are no tasks?
-
         this.say(config.fetchComment(CommentTopic.ListingTask,
                 CommentContext.ofTaskList(taskList.where(predicate), null, taskList.size())), false);
+    }
+
+    /**
+     * Reloads a task into the list.
+     *
+     * @param task the task to reload
+     */
+    public void reloadTask(Task task) {
+        if (!taskList.contains(task)) {
+            taskList.add(task);
+        }
     }
 
     /**

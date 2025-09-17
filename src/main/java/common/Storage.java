@@ -71,7 +71,7 @@ public final class Storage {
      */
     public static void load(ChatBot bot) {
         for (Task task : Storage.loadTasks()) {
-            bot.addTask(task);
+            bot.reloadTask(task);
         }
     }
 }

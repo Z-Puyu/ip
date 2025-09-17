@@ -52,7 +52,7 @@ public class MainWindow extends AnchorPane {
         inputField.clear();
     }
 
-    public void present(String text) {
-        dialogueContainer.getChildren().add(DialogueBox.forBot(text));
+    public void present(String text, boolean isWarning) {
+        dialogueContainer.getChildren().add(DialogueBox.forBot(text, isWarning));
     }
 }

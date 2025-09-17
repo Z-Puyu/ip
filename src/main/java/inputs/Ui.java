@@ -9,6 +9,7 @@ import java.util.StringTokenizer;
 import java.util.function.Consumer;
 
 import common.App;
+import common.ChatBotOutput;
 import common.ResourceLoader;
 import gui.MainWindow;
 import javafx.scene.Scene;
@@ -131,8 +132,8 @@ public class Ui {
         stage.show();
     }
 
-    public void present(String text) {
-        mainWindow.present(text);
+    public void present(ChatBotOutput output) {
+        mainWindow.present(output.text(), output.isWarning());
     }
 }
 

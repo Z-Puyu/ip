@@ -135,7 +135,7 @@ public class App extends Application {
         try {
             bot.sayGoodbye();
         } catch (IOException e) {
-            bot.say("Failed to save data.");
+            bot.say("Failed to save data.", true);
             System.exit(1);
         }
 

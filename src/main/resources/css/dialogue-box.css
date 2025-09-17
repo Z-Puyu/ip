@@ -1,0 +1,18 @@
+.label {
+    -fx-background-color: linear-gradient(to bottom right, wheat, tan);
+    -fx-padding: 5px 15px 5px 15px;
+    -fx-border-insets: 0px 10px 0px 10px;
+    -fx-background-insets: 0px 10px 0px 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 2.5, 0.5, -5, 5);
+    -fx-text-alignment: justify;
+    -fx-min-width: 200px;
+    -fx-max-width: 750px;
+    -fx-wrap-text: true;
+    -fx-text-overrun: WORD_ELLIPSIS;
+}
+
+.warning-label {
+    -fx-text-fill: crimson;
+    -fx-font-weight: bold;
+}
+

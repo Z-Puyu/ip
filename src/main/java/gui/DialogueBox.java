@@ -29,9 +29,13 @@ public class DialogueBox extends HBox {
      * @param text the text
      * @param image the image
      */
-    private DialogueBox(String text, Image image) {
+    private DialogueBox(String text, Image image, boolean isWarning) {
         ResourceLoader.loadFxml(DIALOGUE_BOX_FXML_PATH, this, this);
         this.text.setText(text);
+        if (isWarning) {
+            this.text.getStyleClass().add("warning-label");
+        }
+
         if (image != null) {
             this.image.setImage(image);
         } else {
@@ -46,14 +50,15 @@ public class DialogueBox extends HBox {
         FXCollections.reverse(children);
         getChildren().setAll(children);
         setAlignment(Pos.TOP_LEFT);
+        this.getStyleClass().add("reply-label");
         return this;
     }
 
     public static DialogueBox forUser(String text) {
-        return new DialogueBox(text, USER_IMG);
+        return new DialogueBox(text, USER_IMG, false);
     }
 
-    public static DialogueBox forBot(String text) {
-        return new DialogueBox(text, BOT_IMG).flip();
+    public static DialogueBox forBot(String text, boolean isWarning) {
+        return new DialogueBox(text, BOT_IMG, isWarning).flip();
     }
 }

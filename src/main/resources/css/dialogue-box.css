@@ -1,6 +1,6 @@
 .label {
     -fx-background-color: linear-gradient(to bottom right, wheat, tan);
-    -fx-padding: 5px 15px 5px 15px;
+    -fx-padding: 15px 25px 15px 25px;
     -fx-border-insets: 0px 10px 0px 10px;
     -fx-background-insets: 0px 10px 0px 10px;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 2.5, 0.5, -5, 5);
@@ -9,6 +9,7 @@
     -fx-max-width: 750px;
     -fx-wrap-text: true;
     -fx-text-overrun: WORD_ELLIPSIS;
+    -fx-font-size: 14px;
 }
 
 .warning-label {

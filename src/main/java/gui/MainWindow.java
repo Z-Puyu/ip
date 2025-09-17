@@ -46,7 +46,7 @@ public class MainWindow extends AnchorPane {
      */
     @FXML
     private void handleUserInput() {
-        String text = inputField.getText();
+        String text = inputField.getText().trim();
         if (text.isBlank()) {
             return;
         }

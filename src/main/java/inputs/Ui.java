@@ -13,6 +13,7 @@ import common.ChatBotOutput;
 import common.ResourceLoader;
 import gui.MainWindow;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -20,6 +21,7 @@ import javafx.stage.Stage;
  * A UI that can interpret user input.
  */
 public class Ui {
+    private static final String ICON_PATH = "/images/Wabbajack.png";
     private static final String MAIN_FXML_PATH = "/view/MainWindow.fxml";
 
     private MainWindow mainWindow;
@@ -129,6 +131,8 @@ public class Ui {
         stage.setScene(new Scene(resource.node()));
         mainWindow = resource.loader().getController();
         mainWindow.onInput(this::handle);
+        stage.getIcons().add(new Image(ICON_PATH));
+        stage.setTitle("Sheogorath");
         stage.show();
     }
 

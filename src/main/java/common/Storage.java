@@ -1,8 +1,5 @@
 package common;
 
-import reminders.TaskList;
-import reminders.Task;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -13,6 +10,9 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
+import reminders.Task;
+import reminders.TaskList;
+
 /**
  * A storage for tasks. Manages serialisation and deserialisation.
  */
@@ -22,6 +22,9 @@ public final class Storage {
 
     private Storage() { }
 
+    /**
+     * Saves the task list to the save file.
+     */
     public static void save(TaskList taskList) throws IOException {
         if (Files.notExists(DATA_DIR)) {
             Files.createDirectories(DATA_DIR);
@@ -44,7 +47,7 @@ public final class Storage {
             oos.flush();
         }
     }
-    
+
     private static List<Task> loadTasks() {
         List<Task> tasks = new ArrayList<>();
         if (Files.notExists(SAVE_FILE)) {
@@ -54,7 +57,7 @@ public final class Storage {
         try (ObjectInputStream ois = new ObjectInputStream(Files.newInputStream(SAVE_FILE))) {
             int count = ois.readInt();
             for (int i = 0; i < count; i += 1) {
-                tasks.add((Task)ois.readObject());
+                tasks.add((Task) ois.readObject());
             }
         } catch (IOException | ClassNotFoundException e) {
             return List.of();
@@ -63,9 +66,12 @@ public final class Storage {
         return tasks;
     }
 
+    /**
+     * Loads the task list from the save file.
+     */
     public static void load(ChatBot bot) {
         for (Task task : Storage.loadTasks()) {
-            bot.addTask(task);
+            bot.reloadTask(task);
         }
     }
 }

@@ -1,5 +1,8 @@
 package comments;
 
+/**
+ * The commenter for when a task is reset.
+ */
 public class SheogorathTaskResetCommenter implements Commenter {
     @Override
     public String commentOn(CommentContext context) {

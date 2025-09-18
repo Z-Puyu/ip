@@ -15,6 +15,7 @@ public class TaskList implements Iterable<Task> {
 
     /**
      * Returns the number of tasks in the list.
+     *
      * @return the number of tasks
      */
     public int size() {
@@ -23,15 +24,29 @@ public class TaskList implements Iterable<Task> {
 
     /**
      * Adds a task to the list.
+     *
      * @param task the task
-     * @return true if the task was added, false otherwise
      */
-    public boolean add(Task task) {
-        return tasks.add(task);
+    public void add(Task task) {
+        if (tasks.contains(task)) {
+            return;
+        }
+
+        tasks.add(task);
+    }
+
+    /**
+     * Checks if the list contains a task.
+     * @param task the task
+     * @return true if the list contains the task, false otherwise
+     */
+    public boolean contains(Task task) {
+        return tasks.contains(task);
     }
 
     /**
      * Gets a task from the list.
+     *
      * @param index the index of the task
      * @return the task
      */
@@ -41,31 +56,42 @@ public class TaskList implements Iterable<Task> {
 
     /**
      * Removes a task from the list.
-     * @param index the index of the task
+     *
+     * @param index the 1-based index of the task
      * @return the task
      */
     public Task removeAt(int index) {
-        return tasks.remove(index);
-    }
-
-    public List<Task> where(Predicate<Task> predicate) {
-        if (predicate == null) {
-            return this.tasks;
+        if (index < 1 || index > tasks.size()) {
+            return null;
         }
 
-        List<Task> result = new ArrayList<>();
-        for (Task task : this.tasks) {
+        return tasks.remove(index - 1);
+    }
+
+    /**
+     * Returns a list of tasks that match the given predicate.
+     *
+     * @param predicate the predicate
+     * @return the list of tasks
+     */
+    public List<Task> where(Predicate<Task> predicate) {
+        if (predicate == null) {
+            return new ArrayList<>(tasks);
+        }
+
+        List<Task> results = new ArrayList<>();
+        for (Task task : tasks) {
             if (predicate.test(task)) {
-                result.add(task);
+                results.add(task);
             }
         }
 
-        return result;
+        return results;
     }
 
     @Override
     public Iterator<Task> iterator() {
-        return tasks.iterator();
+        return where(null).iterator();
     }
 
     @Override
@@ -75,6 +101,6 @@ public class TaskList implements Iterable<Task> {
 
     @Override
     public Spliterator<Task> spliterator() {
-        return tasks.spliterator();
+        return where(null).spliterator();
     }
 }

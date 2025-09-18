@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.Temporal;
+import java.util.Objects;
 
 import common.TimeParser;
 import inputs.InputCommand;
@@ -31,11 +32,12 @@ public abstract class Task implements Serializable {
 
     /**
      * Creates a task from an input command.
+     *
      * @param command the input command
      * @return the task
-     * @throws EmptyTaskException if the description is empty
+     * @throws EmptyTaskException          if the description is empty
      * @throws UndefinedTimeFrameException if the start or end time is empty
-     * @throws UndefinedDeadlineException if the deadline is empty
+     * @throws UndefinedDeadlineException  if the deadline is empty
      */
     public static Task from(InputCommand command) throws EmptyTaskException, UndefinedTimeFrameException,
             UndefinedDeadlineException {
@@ -50,28 +52,32 @@ public abstract class Task implements Serializable {
 
         Task task = null;
         switch (command.action()) {
-            case CreateTodo:
-                task = new Task.ToDo(desc);
-                break;
-            case CreateDeadline:
-                String date = command.nextArg();
-                if (date.isBlank()) {
-                    throw new UndefinedDeadlineException("No deadline provided for task.");
-                }
+        case CreateTodo:
+            if (command.containsToken("/by") || command.containsToken("/from")) {
+                throw new EmptyTaskException("No description provided for task.");
+            }
 
-                task = new Task.Deadline(desc, date);
-                break;
-            case CreateEvent:
-                String start = command.readUntil("/to");
-                String end = command.nextArg();
-                if (start.isBlank() || end.isBlank()) {
-                    throw new UndefinedTimeFrameException("No start or end date provided for task.");
-                }
+            task = new Task.ToDo(desc);
+            break;
+        case CreateDeadline:
+            String date = command.nextArg();
+            if (date.isBlank() || !command.containsToken("/by")) {
+                throw new UndefinedDeadlineException("No deadline provided for task.");
+            }
 
-                task = new Task.Event(desc, start, end);
-                break;
-            default:
-                break;
+            task = new Task.Deadline(desc, date);
+            break;
+        case CreateEvent:
+            String start = command.readUntil("/to");
+            String end = command.nextArg();
+            if (start.isBlank() || end.isBlank() || !command.containsToken("/to") || !command.containsToken("/from")) {
+                throw new UndefinedTimeFrameException("No start or end date provided for task.");
+            }
+
+            task = new Task.Event(desc, start, end);
+            break;
+        default:
+            break;
         }
 
         return task;
@@ -98,6 +104,16 @@ public abstract class Task implements Serializable {
         return String.format("[%c] %s", isDone ? 'X' : ' ', description);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Task t && t.description.equals(description);
+    }
+
+    @Override
+    public int hashCode() {
+        return description.hashCode();
+    }
+
     private static class ToDo extends Task {
         public ToDo(String description) {
             super(description);
@@ -110,7 +126,7 @@ public abstract class Task implements Serializable {
     }
 
     private static class Deadline extends Task {
-        private Temporal date;
+        private final Temporal date;
 
         public Deadline(String description, String date) {
             super(description);
@@ -121,20 +137,30 @@ public abstract class Task implements Serializable {
         public String toString() {
             if (date instanceof LocalDate d) {
                 return String.format("[D][%c] %s (by: %s)", isDone() ? 'X' : ' ', getDescription(),
-                                     d.equals(LocalDate.now()) ? "today" : d.format(DATE_FORMAT));
+                        d.equals(LocalDate.now()) ? "today" : d.format(DATE_FORMAT));
             } else if (date instanceof LocalDateTime dateTime) {
                 return String.format("[D][%c] %s (by: %s)", isDone() ? 'X' : ' ', getDescription(),
-                                     dateTime.toLocalDate().equals(LocalDate.now())
-                                     ? "today " + dateTime.toLocalTime() : dateTime.format(DATE_TIME_FORMAT));
+                        dateTime.toLocalDate().equals(LocalDate.now())
+                                ? "today " + dateTime.toLocalTime() : dateTime.format(DATE_TIME_FORMAT));
             }
 
             return String.format("[D][%c] %s (by: %s)", isDone() ? 'X' : ' ', getDescription(), date);
         }
+
+        @Override
+        public boolean equals(Object obj) {
+            return super.equals(obj) && obj instanceof Deadline ddl && date.equals(ddl.date);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(this.getDescription(), this.date);
+        }
     }
 
     private static class Event extends Task {
-        private Temporal startTime;
-        private Temporal endTime;
+        private final Temporal startTime;
+        private final Temporal endTime;
 
         public Event(String description, String startTime, String endTime) {
             super(description);
@@ -144,28 +170,21 @@ public abstract class Task implements Serializable {
 
         @Override
         public String toString() {
-            String start = startTime.toString();
-            if (startTime instanceof LocalDateTime s) {
-                start = s.toLocalDate().equals(LocalDate.now())
-                        ? "today " + s.toLocalTime()
-                        : s.format(DATE_TIME_FORMAT);
-            } else if (startTime instanceof LocalDate d) {
-                start = d.equals(LocalDate.now()) ? "today" : d.format(DATE_FORMAT);
-            }
-
-            String end = endTime.toString();
-            if (endTime instanceof LocalDateTime e) {
-                end = e.toLocalDate().equals(LocalDate.now())
-                      ? "today " + e.toLocalTime()
-                      : e.format(DATE_TIME_FORMAT);
-            } else if (endTime instanceof LocalDate e) {
-                end = e.equals(LocalDate.now()) ? "today" : e.format(DATE_FORMAT);
-            }
-
+            String start = TimeParser.format(startTime, DATE_TIME_FORMAT, DATE_FORMAT);
+            String end = TimeParser.format(endTime, DATE_TIME_FORMAT, DATE_FORMAT);
             return String.format("[E][%c] %s (from: %s to: %s)", isDone() ? 'X' : ' ', getDescription(),
-                                 start, end);
+                    start, end);
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            return super.equals(obj) && obj instanceof Event e
+                    && startTime.equals(e.startTime) && endTime.equals(e.endTime);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(this.getDescription(), this.startTime, this.endTime);
         }
     }
-
-
 }

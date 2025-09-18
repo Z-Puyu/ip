@@ -1,5 +1,8 @@
 package comments;
 
+/**
+ * The commenter for invalid tasks.
+ */
 public class SheogorathInvalidTaskCommenter implements Commenter {
     @Override
     public String commentOn(CommentContext context) {

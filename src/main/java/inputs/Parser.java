@@ -11,17 +11,19 @@ public class Parser {
 
     /**
      * Interprets the given command into an {@link InputAction}.
+     *
      * @param command the command to interpret
      * @return the interpreted action
      */
     public InputAction interpret(String command) {
-        return this.actions.getOrDefault(command, InputAction.Undefined);
+        return this.actions.getOrDefault(command.toLowerCase(), InputAction.Undefined);
     }
 
     /**
      * Links a command to an {@link InputAction}.
+     *
      * @param command the command to link
-     * @param action the action to link to
+     * @param action  the action to link to
      */
     public void link(String command, InputAction action) {
         this.actions.put(command, action);

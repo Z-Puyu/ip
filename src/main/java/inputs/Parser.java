@@ -16,7 +16,7 @@ public class Parser {
      * @return the interpreted action
      */
     public InputAction interpret(String command) {
-        return this.actions.getOrDefault(command, InputAction.Undefined);
+        return this.actions.getOrDefault(command.toLowerCase(), InputAction.Undefined);
     }
 
     /**

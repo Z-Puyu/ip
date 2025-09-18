@@ -53,11 +53,15 @@ public abstract class Task implements Serializable {
         Task task = null;
         switch (command.action()) {
         case CreateTodo:
+            if (command.containsToken("/by") || command.containsToken("/from")) {
+                throw new EmptyTaskException("No description provided for task.");
+            }
+
             task = new Task.ToDo(desc);
             break;
         case CreateDeadline:
             String date = command.nextArg();
-            if (date.isBlank()) {
+            if (date.isBlank() || !command.containsToken("/by")) {
                 throw new UndefinedDeadlineException("No deadline provided for task.");
             }
 
@@ -66,7 +70,7 @@ public abstract class Task implements Serializable {
         case CreateEvent:
             String start = command.readUntil("/to");
             String end = command.nextArg();
-            if (start.isBlank() || end.isBlank()) {
+            if (start.isBlank() || end.isBlank() || !command.containsToken("/to") || !command.containsToken("/from")) {
                 throw new UndefinedTimeFrameException("No start or end date provided for task.");
             }
 

@@ -36,6 +36,16 @@ public record InputCommand(InputAction action, String text, StringTokenizer args
     }
 
     /**
+     * Checks if the command contains a specific token.
+     *
+     * @param token the token to check for
+     * @return true if the command contains the token, false otherwise
+     */
+    public boolean containsToken(String token) {
+        return text.contains(token);
+    }
+
+    /**
      * Reads the next argument until the given delimiter.
      *
      * @param delimiter the delimiter to stop reading at

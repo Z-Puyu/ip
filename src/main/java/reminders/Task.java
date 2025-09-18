@@ -91,10 +91,16 @@ public abstract class Task implements Serializable {
         return isDone;
     }
 
+    /**
+     * Marks the task as done.
+     */
     public void complete() {
         isDone = true;
     }
 
+    /**
+     * Resets the task to undone.
+     */
     public void reset() {
         isDone = false;
     }

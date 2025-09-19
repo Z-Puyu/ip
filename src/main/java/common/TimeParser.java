@@ -26,7 +26,7 @@ public class TimeParser {
     private static final Pattern TIME_NOON = Pattern.compile("^.*noon.*$");
     private static final Pattern TIME_MIDNIGHT = Pattern.compile("^.*midnight.*$");
     private static final Pattern TIME_24_HH_COLON_MM = Pattern.compile("^.*\\s*([0-1]\\d:[0-5]\\d|2[0-3]:[0-5]\\d).*$");
-    private static final Pattern TIME_12_HH_COLON_MM_AP = Pattern.compile("^.*\\s*((?:1[0-2]|0?[1-9]):[0-5]\\d)"
+    private static final Pattern TIME_12_HH_COLON_MM_AP = Pattern.compile("^.*\\s*((?:1[0-2]|0?[1-9]):[0-5]\\d)\\s*"
             + "(am|pm|AM|PM).*$");
 
     private TimeParser() { }

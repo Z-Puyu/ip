@@ -142,7 +142,7 @@ public final class ChatBot {
      * Prints the bot's logo to the console.
      */
     public void showLogo() {
-        System.out.println(config.getLogo() + '\n' + ChatBot.SEPARATOR);
+        System.out.println(config.logo() + '\n' + ChatBot.SEPARATOR);
     }
 
     /**
@@ -150,8 +150,8 @@ public final class ChatBot {
      */
     public void greetUser() {
         assert onOutput != null;
-        onOutput.accept(new ChatBotOutput(config.getGreeting(), false));
-        System.out.println(config.getGreeting() + ChatBot.SEPARATOR);
+        onOutput.accept(new ChatBotOutput(config.greeting(), false));
+        System.out.println(config.greeting() + ChatBot.SEPARATOR);
     }
 
     /**
@@ -160,8 +160,8 @@ public final class ChatBot {
     public void sayGoodbye() throws IOException {
         Storage.save(taskList);
         assert onOutput != null;
-        onOutput.accept(new ChatBotOutput(config.getFarewell(), false));
-        System.out.println(ChatBot.SEPARATOR + '\n' + config.getFarewell());
+        onOutput.accept(new ChatBotOutput(config.farewell(), false));
+        System.out.println(ChatBot.SEPARATOR + '\n' + config.farewell());
     }
 
     /**
@@ -175,7 +175,7 @@ public final class ChatBot {
 
     @Override
     public String toString() {
-        return config.getName();
+        return config.name();
     }
 
     /**

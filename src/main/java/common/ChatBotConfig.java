@@ -11,45 +11,19 @@ import comments.Commenter;
 /**
  * A configuration for a chatbot. This allows different configurations for different bots.
  */
-public class ChatBotConfig {
-    private String name;
-    private String logo;
-    private String greeting;
-    private String farewell;
-    private Map<CommentTopic, Commenter> commenters;
-    private Map<Type, String> errorMessages;
-
-    private ChatBotConfig(
-            String name, String logo, String greeting, String farewell,
-            Map<CommentTopic, Commenter> commenters, Map<Type, String> errorMessages
-    ) {
-        this.name = name;
-        this.logo = logo;
-        this.greeting = greeting;
-        this.farewell = farewell;
-        this.commenters = commenters;
-        this.errorMessages = errorMessages;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public String getLogo() {
-        return this.logo;
-    }
-
-    public String getGreeting() {
-        return this.greeting;
-    }
-
-    public String getFarewell() {
-        return this.farewell;
-    }
+public record ChatBotConfig(
+        String name,
+        String logo,
+        String greeting,
+        String farewell,
+        Map<CommentTopic, Commenter> commenters,
+        Map<Type, String> errorMessages
+) {
 
     /**
      * Fetches a comment based on the topic and context.
-     * @param topic the topic of the comment
+     *
+     * @param topic   the topic of the comment
      * @param context the context of the comment
      * @return the comment
      */
@@ -74,11 +48,12 @@ public class ChatBotConfig {
         private String logo;
         private String greeting;
         private String farewell;
-        private Map<CommentTopic, Commenter> commenters = new HashMap<>();
-        private Map<Type, String> errorMessages = new HashMap<>();
+        private final Map<CommentTopic, Commenter> commenters = new HashMap<>();
+        private final Map<Type, String> errorMessages = new HashMap<>();
 
         /**
          * Sets the name of the chatbot.
+         *
          * @param name the name of the chatbot
          * @return this builder
          */
@@ -89,6 +64,7 @@ public class ChatBotConfig {
 
         /**
          * Sets the logo of the chatbot.
+         *
          * @param logo the logo of the chatbot
          * @return this builder
          */
@@ -99,6 +75,7 @@ public class ChatBotConfig {
 
         /**
          * Sets the greeting text for the config.
+         *
          * @param greeting the greeting text
          * @return this builder
          */
@@ -109,6 +86,7 @@ public class ChatBotConfig {
 
         /**
          * Sets the farewell text for the config.
+         *
          * @param farewell the farewell text
          * @return this builder
          */
@@ -119,7 +97,8 @@ public class ChatBotConfig {
 
         /**
          * Sets the commenter for a specific topic.
-         * @param topic the topic
+         *
+         * @param topic     the topic
          * @param commenter the commenter
          * @return this builder
          */
@@ -130,8 +109,9 @@ public class ChatBotConfig {
 
         /**
          * Sets the error message for a specific error type.
+         *
          * @param errorType the error type
-         * @param msg the error message
+         * @param msg       the error message
          * @return this builder
          */
         public Builder onError(Class<? extends RuntimeException> errorType, String msg) {
@@ -141,6 +121,7 @@ public class ChatBotConfig {
 
         /**
          * Builds the chatbot config.
+         *
          * @return the chatbot config
          */
         public ChatBotConfig build() {
